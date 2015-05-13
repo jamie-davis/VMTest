@@ -1,2 +1,4 @@
 # VMTest
-A library that assists with testing VMs, Very useful when paired with ApprovalTests
+A library that assists with testing VMs. Useful when paired with ApprovalTests
+
+A work in progress.
