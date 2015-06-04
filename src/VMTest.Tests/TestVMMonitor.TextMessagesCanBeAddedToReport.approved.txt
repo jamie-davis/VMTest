@@ -1,0 +1,5 @@
+﻿-->vm.Text = Changed                                                                           
+About to change number to 815                                                                  
+-->vm.Number = 815                                                                             
+Done                                                                                           
+                                                                                               

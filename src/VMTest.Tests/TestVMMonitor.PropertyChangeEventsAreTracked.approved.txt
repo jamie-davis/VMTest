@@ -1,0 +1,9 @@
+﻿Accepted view model "vm":                                                                      
+                                                                                               
+Text              Number                                                                       
+------------ -----------                                                                       
+Initial text         809                                                                       
+                                                                                               
+-->vm.Text = Changed                                                                           
+-->vm.Number = 815                                                                             
+                                                                                               

@@ -1,0 +1,10 @@
+﻿-->vm.Text = Changed                                                                           
+-->vm.Number = 815                                                                             
+                                                                                               
+VM "vm" state:                                                                                 
+                                                                                               
+Text         Number                                                                            
+------- -----------                                                                            
+Changed         815                                                                            
+                                                                                               
+                                                                                               
