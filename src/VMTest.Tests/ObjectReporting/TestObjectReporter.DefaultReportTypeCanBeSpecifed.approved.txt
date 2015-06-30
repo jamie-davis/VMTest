@@ -1,0 +1,4 @@
+﻿StringValue X                                                                                  
+IntValue    10                                                                                 
+DateValue   05/06/2015 00:00:00                                                                
+                                                                                               

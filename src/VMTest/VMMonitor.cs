@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using TestConsole.OutputFormatting;
+using System.Diagnostics;
+using System.Reflection;
 using TestConsoleLib;
+using VMTest.ObjectReporting;
+using VMTest.Utilities;
 
 namespace VMTest
 {
     internal interface IInfoAccess
     {
-        void ReportState<T>(VMMonitor.TypedVMInfo<T> vm, ReportType reportType) where T : INotifyPropertyChanged;
+        void ReportState<T>(VMMonitor.TypedVMInfo<T> vm, ReportType reportType) where T : class, INotifyPropertyChanged;
     }
 
     public class VMMonitor : IInfoAccess
     {
-
         abstract internal class VMInfo
         {
             public INotifyPropertyChanged Notifications { get; set; }
@@ -22,15 +23,117 @@ namespace VMTest
             public Type VMType { get; set; }
 
             public abstract void ReportState(IInfoAccess infoAccess, ReportType reportType);
+            public abstract void Detach();
         }
 
-        internal class TypedVMInfo<T> : VMInfo where T : INotifyPropertyChanged
+        internal class TypedVMInfo<T> : VMInfo where T : class, INotifyPropertyChanged
         {
-            public T VM { get; set; }
+            private object _lock = new object();
+
+            private readonly Output _output;
+            private readonly Dictionary<string, VMInfo> _notifyingChildren = new Dictionary<string, VMInfo>(); 
+            
+            public TypedVMInfo(Output output, T vm, string name)
+            {
+                VM = vm;
+                Name = name;
+                _output = output;
+
+                vm.PropertyChanged += OnPropertyChanged;
+
+                SignUpForChildNotifications();
+            }
+
+            private void SignUpForChildNotifications()
+            {
+                lock (_lock)
+                {
+                    foreach (var prop in typeof (T).GetProperties())
+                    {
+                        CallAttachChild(prop);
+                    }
+                    
+                }
+            }
+
+            private void CallAttachChild(PropertyInfo prop)
+            {
+                if (!typeof (INotifyPropertyChanged).IsAssignableFrom(prop.PropertyType))
+                    return;
+
+               var method = GetType().GetMethod("Attach", BindingFlags.NonPublic | BindingFlags.Instance);
+                Debug.Assert(method != null);
+                Debug.Assert(method.IsGenericMethodDefinition);
+
+                var typedMethod = method.MakeGenericMethod(prop.PropertyType);
+                MethodInvoker.Invoke(typedMethod, this, prop);
+            }
+
+            internal void Attach<TProp>(PropertyInfo prop) where TProp : class, INotifyPropertyChanged
+            {
+                lock (_lock)
+                {
+                    var item = prop.GetValue(VM, null) as TProp;
+                    if (item != null)
+                    {
+                        VMInfo existing;
+                        if (_notifyingChildren.TryGetValue(prop.Name, out existing))
+                        {
+                            existing.Detach();
+                        }
+
+                        _notifyingChildren[prop.Name] = new TypedVMInfo<TProp>(_output, item, Name + "." + prop.Name)
+                        {
+                            VMType = item.GetType()
+                        };
+                    }
+                }
+            }
+
+            public T VM { get; private set; }
             public override void ReportState(IInfoAccess infoAccess, ReportType reportType)
             {
                 infoAccess.ReportState(this, reportType);
             }
+
+            public override void Detach()
+            {
+                lock (_lock)
+                {
+                    foreach (var child in _notifyingChildren)
+                    {
+                        child.Value.Detach();
+                    }
+                    _notifyingChildren.Clear();
+                }
+            }
+
+            private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            {
+                if (!ReferenceEquals(sender, VM))
+                    return;
+
+                var prop = VMType.GetProperty(e.PropertyName);
+                if (prop == null)
+                {
+                    _output.WrapLine("-->{0}.{1} Change event for unknown property.", Name, e.PropertyName);
+                    return;
+                }
+
+                lock (_lock)
+                {
+                    VMInfo child;
+                    if (_notifyingChildren.TryGetValue(e.PropertyName, out child))
+                    {
+                        child.Detach();
+                        _notifyingChildren.Remove(e.PropertyName);
+                    }
+
+                    CallAttachChild(prop);
+               }
+                _output.WrapLine("-->{0}.{1} = {2}", Name, e.PropertyName, prop.GetValue(sender, null));
+            }
+
         }
 
         private readonly Output _output;
@@ -46,45 +149,29 @@ namespace VMTest
             _output = new Output();
         }
 
-        public void Monitor<T>(T vm, string name, ReportType initialReportType = ReportType.Default) where T: INotifyPropertyChanged
+        public void Monitor<T>(T vm, string name, ReportType initialReportType = ReportType.Default) where T: class, INotifyPropertyChanged
         {
             var info = TrackVM(vm, name);
             DisplayVM(info, initialReportType, ReportType.Table, "Accepted view model \"{0}\":");
         }
 
-        private TypedVMInfo<T> TrackVM<T>(T vm, string name) where T : INotifyPropertyChanged
+        private TypedVMInfo<T> TrackVM<T>(T vm, string name) where T : class, INotifyPropertyChanged
         {
-            var vmInfo = new TypedVMInfo<T>
+            var vmInfo = new TypedVMInfo<T>(_output, vm, name)
             {
-                VM = vm,
                 Notifications = vm, 
-                Name = name,
                 VMType = vm.GetType()
             };
             _vms.Add(vm, vmInfo);
-            vm.PropertyChanged += OnPropertyChanged;
 
             return vmInfo;
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void DisplayVM<T>(TypedVMInfo<T> vmInfo, ReportType reportType, ReportType defaultReportType, string heading = null) where T : class, INotifyPropertyChanged
         {
-            VMInfo vmInfo;
-            if (!_vms.TryGetValue(sender, out vmInfo))
-                return;
+            if (reportType == ReportType.Default)
+                reportType = defaultReportType;
 
-            var prop = vmInfo.VMType.GetProperty(e.PropertyName);
-            if (prop == null)
-            {
-                _output.WrapLine("-->{0}.{1} Change event for unknown property.", vmInfo.Name, e.PropertyName);
-                return;
-            }
-
-            _output.WrapLine("-->{0}.{1} = {2}", vmInfo.Name, e.PropertyName, prop.GetValue(sender));
-        }
-
-        private void DisplayVM<T>(TypedVMInfo<T> vmInfo, ReportType reportType, ReportType defaultReportType, string heading = null) where T : INotifyPropertyChanged
-        {
             if (reportType != ReportType.NoReport)
             {
                 if (heading != null)
@@ -93,29 +180,10 @@ namespace VMTest
                     _output.WriteLine();
                 }
 
-                switch (reportType == ReportType.Default ? defaultReportType : reportType)
-                {
-                    case ReportType.PropertyList:
-                        ListProperties(vmInfo.VM);
-                        break;
-
-                    case ReportType.Table:
-                        _output.FormatTable(new[] { vmInfo.VM });
-                        break;
-
-                    default:
-                        throw new ArgumentOutOfRangeException("reportType");
-                }
-
+                var reporter = new ObjectReporter<T>(reportType);
+                reporter.Report(vmInfo.VM, _output);
                 _output.WriteLine();
             }
-        }
-
-        private void ListProperties(INotifyPropertyChanged vm)
-        {
-            var vmType = vm.GetType();
-            var props = vmType.GetProperties().Select(p => new {Property = p.Name, Value = p.GetValue(vm)});
-            _output.FormatTable(props, ReportFormattingOptions.OmitHeadings);
         }
 
         public void ReportState<T>(T vm, ReportType reportType = ReportType.Default) where T : INotifyPropertyChanged
@@ -128,7 +196,7 @@ namespace VMTest
             info.ReportState(this, reportType);
         }
 
-        void IInfoAccess.ReportState<T>(TypedVMInfo<T> vm, ReportType reportType) 
+        void IInfoAccess.ReportState<T>(TypedVMInfo<T> vm, ReportType reportType)
         {
             _output.WriteLine();
             DisplayVM(vm, reportType, ReportType.Table, "VM \"{0}\" state:");

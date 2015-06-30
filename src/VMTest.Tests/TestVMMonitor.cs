@@ -25,7 +25,7 @@ namespace VMTest.Tests
                 {
                     if (value == _text) return;
                     _text = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged("Text");
                 }
             }
 
@@ -36,14 +36,63 @@ namespace VMTest.Tests
                 {
                     if (value == _number) return;
                     _number = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged("Number");
                 }
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
 
             [NotifyPropertyChangedInvocator]
-            protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                var handler = PropertyChanged;
+                if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        class VM2 : INotifyPropertyChanged
+        {
+            private string _text;
+            private int _number;
+            private VM _vm;
+
+            public string Text
+            {
+                get { return _text; }
+                set
+                {
+                    if (value == _text) return;
+                    _text = value;
+                    OnPropertyChanged("Text");
+                }
+            }
+
+            public int Number
+            {
+                get { return _number; }
+                set
+                {
+                    if (value == _number) return;
+                    _number = value;
+                    OnPropertyChanged("Number");
+                }
+            }
+
+            public VM VM
+            {
+                get { return _vm; }
+                set
+                {
+                    if (Equals(value, _vm)) return;
+                    _vm = value;
+                    OnPropertyChanged("VM");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            [NotifyPropertyChangedInvocator]
+            protected virtual void OnPropertyChanged(string propertyName)
             {
                 var handler = PropertyChanged;
                 if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
@@ -205,6 +254,36 @@ namespace VMTest.Tests
             vmt.WriteLine("About to change number to {0}", 815);
             vm.Number = 815;
             vmt.WriteLine("Done");
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void ChangeNotificationsFromChildObjectsAreReported()
+        {
+            //Arrange
+            var vm = new VM2
+            {
+                Text = "Initial text",
+                Number = 809,
+                VM = new VM
+                {
+                    Text = "Child Object Text",
+                    Number = 655
+                }
+            };
+
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+            vm.Text = "Changed";
+
+            //Act
+            vmt.WriteLine("About to change child number to {0}", 815);
+            vm.VM.Number = 815;
+            vmt.WriteLine("Done");
+            vmt.ReportState(vm);
 
             //Assert
             Console.WriteLine(vmt.Report);

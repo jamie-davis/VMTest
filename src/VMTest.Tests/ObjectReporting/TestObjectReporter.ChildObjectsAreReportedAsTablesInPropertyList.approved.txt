@@ -1,0 +1,9 @@
+﻿Child       String       Int                                                                   
+            Value      Value Date Value                                                        
+            ------- -------- -------------------                                               
+            Child.X       20 05/06/2015 12:00:00                                               
+                                                                                               
+StringValue X                                                                                  
+IntValue    10                                                                                 
+DateValue   05/06/2015 00:00:00                                                                
+                                                                                               

@@ -1,0 +1,17 @@
+﻿-->vm.Text = Changed                                                                           
+About to change child number to 815                                                            
+-->vm.VM.Number = 815                                                                          
+Done                                                                                           
+                                                                                               
+VM "vm" state:                                                                                 
+                                                                                               
+Text         Number                                                                            
+------- -----------                                                                            
+Changed         809                                                                            
+                                                                                               
+    Text                   Number                                                              
+    ----------------- -----------                                                              
+    Child Object Text         815                                                              
+                                                                                               
+                                                                                               
+                                                                                               
