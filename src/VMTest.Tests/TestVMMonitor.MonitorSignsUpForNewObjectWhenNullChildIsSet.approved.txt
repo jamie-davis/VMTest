@@ -1,0 +1,12 @@
+﻿About to set VM                                                                                
+-->vm.VM =                                                                                     
+                                                                                               
+Text                   Number                                                                  
+----------------- -----------                                                                  
+Child Object Text         655                                                                  
+                                                                                               
+Done                                                                                           
+About to change VM number to 200                                                               
+-->vm.VM.Number = 200                                                                          
+Done                                                                                           
+                                                                                               

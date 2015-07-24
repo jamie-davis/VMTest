@@ -9,6 +9,8 @@ Text         Number
 ------- -----------                                                                            
 Changed         809                                                                            
                                                                                                
+    VM                                                                                         
+    --                                                                                         
     Text                   Number                                                              
     ----------------- -----------                                                              
     Child Object Text         815                                                              

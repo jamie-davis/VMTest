@@ -1,0 +1,6 @@
+﻿About to change VM                                                                             
+-->vm.VM =                                                                                     
+Done                                                                                           
+About to change old VM number to 200 - should not show up                                      
+Done                                                                                           
+                                                                                               

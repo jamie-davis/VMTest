@@ -1,0 +1,13 @@
+﻿-->vm.VMCollection =                                                                           
+                                                                                               
+      Count                                                                                    
+-----------                                                                                    
+          0                                                                                    
+                                                                                               
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+                                                                                               
+About to change old VM list item                                                               
+Done                                                                                           
+                                                                                               

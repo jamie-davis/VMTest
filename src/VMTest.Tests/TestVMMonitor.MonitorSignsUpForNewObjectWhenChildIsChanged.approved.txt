@@ -1,0 +1,14 @@
+﻿About to change VM                                                                             
+-->vm.VM =                                                                                     
+                                                                                               
+Text                    Number                                                                 
+------------------ -----------                                                                 
+Replacement object          10                                                                 
+                                                                                               
+Done                                                                                           
+About to set new VM number to 100                                                              
+-->vm.VM.Number = 100                                                                          
+Done                                                                                           
+About to change old VM number to 200 - should not show up                                      
+Done                                                                                           
+                                                                                               

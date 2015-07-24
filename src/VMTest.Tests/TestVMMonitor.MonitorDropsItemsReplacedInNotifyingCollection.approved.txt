@@ -1,0 +1,18 @@
+﻿About to replace collection item                                                               
+-->vm.VMCollection.Item[] changed                                                              
+-->vm.VMCollection Item at [0] =                                                               
+Text          Number                                                                           
+-------- -----------                                                                           
+Original           1                                                                           
+                                                                                               
+Replaced By :                                                                                  
+Text             Number                                                                        
+----------- -----------                                                                        
+Replacement           2                                                                        
+                                                                                               
+About to update replaced collection item                                                       
+Done                                                                                           
+About to update new collection item                                                            
+-->vm.VMCollection[0].Text = new item changed                                                  
+Done                                                                                           
+                                                                                               

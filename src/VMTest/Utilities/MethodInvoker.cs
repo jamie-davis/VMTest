@@ -45,6 +45,7 @@ namespace VMTest.Utilities
             }
         }
 
+        [DebuggerHidden]
         private static Func<object, IEnumerable<object>, object> Generate(MethodInfo method)
         {
             var expressions = new List<Expression>();

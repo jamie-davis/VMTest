@@ -1,0 +1,27 @@
+﻿About to clear the collection                                                                  
+-->vm.VMCollection.Count = 0                                                                   
+-->vm.VMCollection.Item[] changed                                                              
+-->{0} Cleared.                                                                                
+Done                                                                                           
+About to update each removed item in turn                                                      
+Done                                                                                           
+New VM state:                                                                                  
+                                                                                               
+VM "vm" state:                                                                                 
+                                                                                               
+VM3                                                                                            
+---                                                                                            
+                                                                                               
+                                                                                               
+    VMCollection                                                                               
+    ------------                                                                               
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+    VMList                                                                                     
+    ------                                                                                     
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+                                                                                               
+                                                                                               

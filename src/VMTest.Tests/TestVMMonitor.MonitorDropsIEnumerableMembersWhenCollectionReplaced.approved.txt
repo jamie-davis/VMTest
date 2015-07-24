@@ -1,0 +1,13 @@
+﻿-->vm.VMList =                                                                                 
+                                                                                               
+   Capacity       Count                                                                        
+----------- -----------                                                                        
+          0           0                                                                        
+                                                                                               
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+                                                                                               
+About to change old VM list item                                                               
+Done                                                                                           
+                                                                                               

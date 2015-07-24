@@ -240,6 +240,20 @@ namespace VMTest.Tests.ObjectReporting
                     .ToList();
             }
         }
+
+        class TypeWithNoProperties : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            [NotifyPropertyChangedInvocator]
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                var handler = PropertyChanged;
+                if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+        }
+
         #endregion
 
         [SetUp]
@@ -373,6 +387,37 @@ namespace VMTest.Tests.ObjectReporting
             //Assert
             Approvals.Verify(_output.Report);
         }
+
+        [Test]
+        public void ObjectWithNoPropertiesIsReported()
+        {
+            //Arrange
+            var item = new TypeWithNoProperties();
+            var reporter = new ObjectReporter<TypeWithNoProperties>(ReportType.Table);
+
+            //Act
+            reporter.Report(item, _output);
+
+            //Assert
+            Approvals.Verify(_output.Report);
+        }
+
+
+        [Test]
+        public void ObjectReporterCanReportACollection()
+        {
+            //Arrange
+            var item = new List<string> {"Alpha", "Beta", "Charlie", "Delta", "Echo", "Foxtrot" };
+            var reporter = new ObjectReporter<List<string>>(ReportType.Table);
+
+            //Act
+            reporter.Report(item, _output);
+
+            //Assert
+            Console.WriteLine(_output.Report);
+            Approvals.Verify(_output.Report);
+        }
+
 
     }
 }

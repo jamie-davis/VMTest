@@ -1,0 +1,13 @@
+﻿About to add new collection item                                                               
+-->vm.VMCollection.Count = 1                                                                   
+-->vm.VMCollection.Item[] changed                                                              
+-->vm.VMCollection Item inserted at [0] =                                                      
+                                                                                               
+Text                   Number                                                                  
+----------------- -----------                                                                  
+Child Object Text         655                                                                  
+                                                                                               
+About to update new collection item                                                            
+-->vm.VMCollection[0].Text = list item changed                                                 
+Done                                                                                           
+                                                                                               

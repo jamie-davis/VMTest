@@ -1,0 +1,22 @@
+﻿Accepted view model "vm":                                                                      
+                                                                                               
+VM3                                                                                            
+---                                                                                            
+                                                                                               
+                                                                                               
+    VMCollection                                                                               
+    ------------                                                                               
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+    VMList                                                                                     
+    ------                                                                                     
+    Text                   Number                                                              
+    ----------------- -----------                                                              
+    Child Object Text         655                                                              
+                                                                                               
+                                                                                               
+About to change VM list item                                                                   
+-->vm.VMList[0].Text = list item changed                                                       
+Done                                                                                           
+                                                                                               

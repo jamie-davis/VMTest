@@ -40,9 +40,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TestConsole, Version=1.0.1.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TestConsole, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TestConsole.1.0.1.1\lib\net40\TestConsole.dll</HintPath>
+      <HintPath>..\packages\TestConsole.1.0.2.0\lib\net40\TestConsole.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

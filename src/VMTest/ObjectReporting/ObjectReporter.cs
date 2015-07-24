@@ -64,24 +64,80 @@ namespace VMTest.ObjectReporting
 
         private static Report<T> MakeTableReport(T item)
         {
-            return new[] {item}.AsReport(rep => DesignReport(rep));
+            var items = (item as object == null) 
+            ? new T[] {}
+            : new[] {item};
+            return items.AsReport(rep => DesignReport(rep));
         }
 
-        internal static void DesignReport(ReportParameters<T> rep)
+        internal static void DesignReport(ReportParameters<T> rep, string title = null)
         {
+            if (title != null)
+                rep.Title(title);
+
             if (Type.GetTypeCode(typeof (T)) != TypeCode.Object)
             {
                 rep.AddColumn(i => i, cc => cc.Heading(typeof (T).Name));
                 return;
             }
 
+            var columns = 0;
+            var childReports = new List<PropertyInfo>();
             foreach (var propertyInfo in typeof(T).GetProperties())
             {
+                if (propertyInfo.GetIndexParameters().Any())
+                    continue;
+
                 if (Type.GetTypeCode(propertyInfo.PropertyType) == TypeCode.Object)
-                    AddChildToReport(rep, propertyInfo);
+                    childReports.Add(propertyInfo);
                 else
+                {
                     AddPropertyToReport(rep, propertyInfo);
+                    ++columns;
+                }
             }
+
+            if (columns == 0)
+            {
+                rep.AddColumn(t => (string)null, cc => cc.Heading(typeof(T).Name));
+            }
+
+            foreach (var propertyInfo in childReports)
+            {
+                AddChildToReport(rep, propertyInfo);
+            }
+
+            if (typeof (IEnumerable).IsAssignableFrom(typeof (T)))
+            {
+                AddCollectionItemsChildReport(rep);
+            }
+        }
+
+        private static void AddCollectionItemsChildReport(ReportParameters<T> rep)
+        {
+            var method = typeof (ObjectReporter<T>)
+                .GetMethod("AddChildReport",
+                    BindingFlags.NonPublic | BindingFlags.Static);
+            Debug.Assert(method != null);
+            var childType = DetermineChildType(typeof (T));
+            var typedMethod = method.MakeGenericMethod(typeof (T), childType);
+            var getterFn = MakeReturnSelfGetterFn().Compile();
+            MethodInvoker.Invoke(typedMethod, null, getterFn, rep, string.Empty);
+        }
+
+        private static Expression<Func<T, T>> MakeReturnSelfGetterFn()
+        {
+            var parameter = Expression.Parameter(typeof (T));
+            return Expression.Lambda<Func<T, T>>(parameter, parameter);
+        }
+
+        private static Type DetermineChildType(Type type)
+        {
+            Type enumeratedType;
+            if (!GetEnumeratedType(type, out enumeratedType))
+                return typeof (Object);
+
+            return enumeratedType;
         }
 
         private static void AddPropertyToReport(ReportParameters<T> rep, PropertyInfo propertyInfo)
@@ -127,29 +183,30 @@ namespace VMTest.ObjectReporting
                 var getterFn = MakeGetterFn<TItem, TProp>(property)
                     .Compile();
                 var typedMethod = method.MakeGenericMethod(typeof(T), enumeratedType);
-                MethodInvoker.Invoke(typedMethod, null, getterFn, rep);
+                MethodInvoker.Invoke(typedMethod, null, getterFn, rep, property.Name);
             }
             else
             {
                 var getterFn = MakeEnumerableGetterFn<TItem, TProp>(property)
                     .Compile();
                var typedMethod = method.MakeGenericMethod(typeof(T), typeof(TProp));
-               MethodInvoker.Invoke(typedMethod, null, getterFn, rep);
+               MethodInvoker.Invoke(typedMethod, null, getterFn, rep, property.Name);
             }
 
         }
 
         // ReSharper disable once UnusedMember.Global
-        private static void AddChildReport<TContainer, TChild>(Func<TContainer,IEnumerable<TChild>>  getterFn, ReportParameters<TContainer> rep)
+        private static void AddChildReport<TContainer, TChild>(Func<TContainer,IEnumerable<TChild>>  getterFn, ReportParameters<TContainer> rep, string title)
         {
             var method = typeof(ObjectReporter<TChild>)
                 .GetMethod("DesignReport",
                 BindingFlags.NonPublic | BindingFlags.Static);
             Debug.Assert(method != null);
 
-            var param = Expression.Parameter(typeof(ReportParameters<TChild>));
+            var repParam = Expression.Parameter(typeof(ReportParameters<TChild>));
+            var titleParam = Expression.Constant(title);
             var reporter = Expression.Lambda<Action<ReportParameters<TChild>>>(
-                Expression.Call(method, param), param)
+                Expression.Call(method, repParam, titleParam), repParam)
                 .Compile();
             rep.AddChild(getterFn, reporter);
         }

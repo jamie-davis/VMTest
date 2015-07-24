@@ -2,14 +2,20 @@
 ----------- -----------                                                                        
 X                    10                                                                        
                                                                                                
+    Children                                                                                   
+    --------                                                                                   
     Text                                                                                       
     -------                                                                                    
     Child 0                                                                                    
                                                                                                
+        Children                                                                               
+        --------                                                                               
         StringValue    IntValue DateValue                                                      
         ----------- ----------- -------------------                                            
         Nested 0              0 26/06/2015 08:10:00                                            
                                                                                                
+            Children                                                                           
+            --------                                                                           
                   Int32                                                                        
             -----------                                                                        
                       0                                                                        
@@ -20,6 +26,8 @@ X                    10
                                                                                                
         Nested 1              1 26/06/2015 08:11:00                                            
                                                                                                
+            Children                                                                           
+            --------                                                                           
                   Int32                                                                        
             -----------                                                                        
                       0                                                                        
@@ -31,10 +39,14 @@ X                    10
                                                                                                
     Child 1                                                                                    
                                                                                                
+        Children                                                                               
+        --------                                                                               
         StringValue    IntValue DateValue                                                      
         ----------- ----------- -------------------                                            
         Nested 0              0 26/06/2015 08:10:00                                            
                                                                                                
+            Children                                                                           
+            --------                                                                           
                   Int32                                                                        
             -----------                                                                        
                       0                                                                        
@@ -45,6 +57,8 @@ X                    10
                                                                                                
         Nested 1              1 26/06/2015 08:11:00                                            
                                                                                                
+            Children                                                                           
+            --------                                                                           
                   Int32                                                                        
             -----------                                                                        
                       0                                                                        

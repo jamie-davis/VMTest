@@ -1,0 +1,12 @@
+﻿About to remove collection item                                                                
+-->vm.VMCollection.Count = 0                                                                   
+-->vm.VMCollection.Item[] changed                                                              
+-->vm.VMCollection Item at [0] removed =                                                       
+                                                                                               
+Text                   Number                                                                  
+----------------- -----------                                                                  
+Child Object Text         655                                                                  
+                                                                                               
+About to update removed collection item                                                        
+Done                                                                                           
+                                                                                               

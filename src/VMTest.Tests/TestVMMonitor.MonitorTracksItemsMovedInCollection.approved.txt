@@ -1,0 +1,34 @@
+﻿About to move item 1 to next position                                                          
+-->vm.VMCollection.Item[] changed                                                              
+-->vm.VMCollection Item at [1] Moved to [2]=                                                   
+Done                                                                                           
+About to update item in position 1                                                             
+-->vm.VMCollection[1].Text = This is now item 1                                                
+Done                                                                                           
+About to update item in position 2                                                             
+-->vm.VMCollection[2].Text = This is now item 2                                                
+Done                                                                                           
+New VM state:                                                                                  
+                                                                                               
+VM "vm" state:                                                                                 
+                                                                                               
+VM3                                                                                            
+---                                                                                            
+                                                                                               
+                                                                                               
+    VMCollection                                                                               
+    ------------                                                                               
+    Text                    Number                                                             
+    ------------------ -----------                                                             
+    Item 0                       0                                                             
+    This is now item 1           2                                                             
+    This is now item 2           1                                                             
+    Item 3                       3                                                             
+                                                                                               
+    VMList                                                                                     
+    ------                                                                                     
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+                                                                                               
+                                                                                               

@@ -1,0 +1,14 @@
+﻿   Capacity       Count                                                                        
+----------- -----------                                                                        
+          8           6                                                                        
+                                                                                               
+    String                                                                                     
+    -------                                                                                    
+    Alpha                                                                                      
+    Beta                                                                                       
+    Charlie                                                                                    
+    Delta                                                                                      
+    Echo                                                                                       
+    Foxtrot                                                                                    
+                                                                                               
+                                                                                               
