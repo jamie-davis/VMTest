@@ -1,0 +1,36 @@
+﻿Accepted view model "main":                                                                    
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Alpha              5                                                                       
+    Beta               4                                                                       
+    Charlie            7                                                                       
+    Delta              5                                                                       
+    Echo               4                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           8                                                                       
+    Kilo               4                                                                       
+    Lima               4                                                                       
+    Mike               4                                                                       
+    November           8                                                                       
+    Oscar              5                                                                       
+    Papa               4                                                                       
+    Quebec             6                                                                       
+    Romeo              5                                                                       
+    Sierra             6                                                                       
+    Tango              5                                                                       
+    Uniform            7                                                                       
+    Victor             6                                                                       
+    Whiskey            7                                                                       
+    X-Ray              5                                                                       
+    Zulu               4                                                                       
+                                                                                               
+                                                                                               
+                                                                                               

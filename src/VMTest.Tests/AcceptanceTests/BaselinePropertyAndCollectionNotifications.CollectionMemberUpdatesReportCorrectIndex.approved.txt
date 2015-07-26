@@ -1,0 +1,197 @@
+﻿First this test will remove items and update the last item in the Members collection.          
+Second, it will replace the removed items and again, update the last item in the Members       
+collection.                                                                                    
+Each last item update will set the item's Count to the index of the last item. This should     
+match the reported index in all cases.                                                         
+Accepted view model "main":                                                                    
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Alpha              5                                                                       
+    Beta               4                                                                       
+    Charlie            7                                                                       
+    Delta              5                                                                       
+    Echo               4                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           8                                                                       
+    Kilo               4                                                                       
+    Lima               4                                                                       
+    Mike               4                                                                       
+    November           8                                                                       
+    Oscar              5                                                                       
+    Papa               4                                                                       
+    Quebec             6                                                                       
+    Romeo              5                                                                       
+    Sierra             6                                                                       
+    Tango              5                                                                       
+    Uniform            7                                                                       
+    Victor             6                                                                       
+    Whiskey            7                                                                       
+    X-Ray              5                                                                       
+    Zulu               4                                                                       
+                                                                                               
+                                                                                               
+-->main.Members[22].Count = 22                                                                 
+-->main.Members.Count = 22                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item at [0] removed =                                                          
+                                                                                               
+Name        Count                                                                              
+----- -----------                                                                              
+Alpha           5                                                                              
+                                                                                               
+-->main.Members[21].Count = 21                                                                 
+-->main.Members.Count = 21                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item at [0] removed =                                                          
+                                                                                               
+Name       Count                                                                               
+---- -----------                                                                               
+Beta           4                                                                               
+                                                                                               
+-->main.Members[20].Count = 20                                                                 
+-->main.Members.Count = 20                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item at [0] removed =                                                          
+                                                                                               
+Name          Count                                                                            
+------- -----------                                                                            
+Charlie           7                                                                            
+                                                                                               
+-->main.Members[19].Count = 19                                                                 
+-->main.Members.Count = 19                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item at [0] removed =                                                          
+                                                                                               
+Name        Count                                                                              
+----- -----------                                                                              
+Delta           5                                                                              
+                                                                                               
+-->main.Members[18].Count = 18                                                                 
+-->main.Members.Count = 18                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item at [0] removed =                                                          
+                                                                                               
+Name       Count                                                                               
+---- -----------                                                                               
+Echo           4                                                                               
+                                                                                               
+                                                                                               
+VM "main" state:                                                                               
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           8                                                                       
+    Kilo               4                                                                       
+    Lima               4                                                                       
+    Mike               4                                                                       
+    November           8                                                                       
+    Oscar              5                                                                       
+    Papa               4                                                                       
+    Quebec             6                                                                       
+    Romeo              5                                                                       
+    Sierra             6                                                                       
+    Tango              5                                                                       
+    Uniform            7                                                                       
+    Victor             6                                                                       
+    Whiskey            7                                                                       
+    X-Ray              5                                                                       
+    Zulu              18                                                                       
+                                                                                               
+                                                                                               
+-->main.Members.Count = 19                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item inserted at [0] =                                                         
+                                                                                               
+Name        Count                                                                              
+----- -----------                                                                              
+Alpha           5                                                                              
+                                                                                               
+-->main.Members.Count = 20                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item inserted at [0] =                                                         
+                                                                                               
+Name       Count                                                                               
+---- -----------                                                                               
+Beta           4                                                                               
+                                                                                               
+-->main.Members[19].Count = 19                                                                 
+-->main.Members.Count = 21                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item inserted at [0] =                                                         
+                                                                                               
+Name          Count                                                                            
+------- -----------                                                                            
+Charlie           7                                                                            
+                                                                                               
+-->main.Members[20].Count = 20                                                                 
+-->main.Members.Count = 22                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item inserted at [0] =                                                         
+                                                                                               
+Name        Count                                                                              
+----- -----------                                                                              
+Delta           5                                                                              
+                                                                                               
+-->main.Members[21].Count = 21                                                                 
+-->main.Members.Count = 23                                                                     
+-->main.Members.Item[] changed                                                                 
+-->main.Members Item inserted at [0] =                                                         
+                                                                                               
+Name       Count                                                                               
+---- -----------                                                                               
+Echo           4                                                                               
+                                                                                               
+-->main.Members[22].Count = 22                                                                 
+                                                                                               
+VM "main" state:                                                                               
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Echo               4                                                                       
+    Delta              5                                                                       
+    Charlie            7                                                                       
+    Beta               4                                                                       
+    Alpha              5                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           8                                                                       
+    Kilo               4                                                                       
+    Lima               4                                                                       
+    Mike               4                                                                       
+    November           8                                                                       
+    Oscar              5                                                                       
+    Papa               4                                                                       
+    Quebec             6                                                                       
+    Romeo              5                                                                       
+    Sierra             6                                                                       
+    Tango              5                                                                       
+    Uniform            7                                                                       
+    Victor             6                                                                       
+    Whiskey            7                                                                       
+    X-Ray              5                                                                       
+    Zulu              22                                                                       
+                                                                                               
+                                                                                               
+                                                                                               

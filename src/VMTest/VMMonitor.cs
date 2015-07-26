@@ -495,6 +495,7 @@ namespace VMTest
                     }
                     ++index;
                 }
+                RenumberNotifyingChildren();
             }
 
             private void HandleAddToCollection(NotifyCollectionChangedEventArgs e)
@@ -502,10 +503,12 @@ namespace VMTest
                 var index = e.NewStartingIndex;
                 foreach (var item in e.NewItems)
                 {
+                    InsertBlankChild(item, index);
                     CallAttachChild(item, index);
                     ReportNewItem(item, index);
                     ++index;
                 }
+                RenumberNotifyingChildren();
             }
 
             private void ReportNewItem(object item, int index)
@@ -573,6 +576,14 @@ namespace VMTest
             private void ReportMovedItem(VMInfo item, int oldIndex, int newIndex)
             {
                 _output.WrapLine("-->{0} Item at [{1}] Moved to [{2}]= ", Name, oldIndex, newIndex);
+            }
+
+            private void InsertBlankChild(object item, int index)
+            {
+                while (_notifyingChildren.Count < index - 1)
+                    _notifyingChildren.Add(null);
+
+                _notifyingChildren.Insert(index, null);
             }
 
             private void ReportValue(object sender, PropertyChangedEventArgs e, PropertyInfo prop)

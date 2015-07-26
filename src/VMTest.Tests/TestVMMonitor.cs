@@ -679,6 +679,117 @@ namespace VMTest.Tests
         }
 
         [Test]
+        public void MonitorUpdatesItemIndexWhenItemsAreAddedToCollection()
+        {
+            //Arrange
+            var alpha = new VM
+            {
+                Text = "Alpha",
+                Number = 0
+            };
+            var beta = new VM
+            {
+                Text = "Beta",
+                Number = 0
+            };
+            var charlie = new VM
+            {
+                Text = "Charlie",
+                Number = 0
+            };
+            var delta = new VM
+            {
+                Text = "Delta",
+                Number = 0
+            };
+
+            var vm = new VM3
+            {
+                VMCollection = new ObservableCollection<VM>
+                {
+                    alpha,
+                    charlie,
+                    delta,                },
+            };
+ 
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vmt.WriteLine("About to edit item charlie at position 1");
+            charlie.Number++;
+            vmt.WriteLine("Done");
+            vmt.WriteLine("About to insert item Beta at position 1");
+            vm.VMCollection.Insert(1, beta);
+            vmt.WriteLine("Done");
+            vmt.WriteLine("About to edit item charlie at position 2");
+            charlie.Number++;
+            vmt.WriteLine("Done");
+            vmt.WriteLine("New VM state:");
+            vmt.ReportState(vm);
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void MonitorUpdatesItemIndexWhenItemsAreRemovedFromCollection()
+        {
+            //Arrange
+            var alpha = new VM
+            {
+                Text = "Alpha",
+                Number = 0
+            };
+            var beta = new VM
+            {
+                Text = "Beta",
+                Number = 0
+            };
+            var charlie = new VM
+            {
+                Text = "Charlie",
+                Number = 0
+            };
+            var delta = new VM
+            {
+                Text = "Delta",
+                Number = 0
+            };
+
+            var vm = new VM3
+            {
+                VMCollection = new ObservableCollection<VM>
+                {
+                    alpha,
+                    beta,
+                    charlie,
+                    delta,                },
+            };
+ 
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vmt.WriteLine("About to edit item charlie at position 2");
+            charlie.Number++;
+            vmt.WriteLine("Done");
+            vmt.WriteLine("About to remove item Beta at position 1");
+            vm.VMCollection.Remove(beta);
+            vmt.WriteLine("Done");
+            vmt.WriteLine("About to edit item charlie at position 1");
+            charlie.Number++;
+            vmt.WriteLine("Done");
+            vmt.WriteLine("New VM state:");
+            vmt.ReportState(vm);
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
         public void MonitorDropsItemsRemovedFromCollectionByClear()
         {
             //Arrange

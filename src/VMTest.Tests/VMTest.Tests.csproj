@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptanceTests\BaselinePropertyAndCollectionNotifications.cs" />
     <Compile Include="ObjectReporting\TestObjectReporter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TestVMMonitor.cs" />

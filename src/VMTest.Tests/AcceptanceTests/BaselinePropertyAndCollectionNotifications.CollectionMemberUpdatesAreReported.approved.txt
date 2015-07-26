@@ -1,0 +1,92 @@
+﻿Accepted view model "main":                                                                    
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Alpha              5                                                                       
+    Beta               4                                                                       
+    Charlie            7                                                                       
+    Delta              5                                                                       
+    Echo               4                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           8                                                                       
+    Kilo               4                                                                       
+    Lima               4                                                                       
+    Mike               4                                                                       
+    November           8                                                                       
+    Oscar              5                                                                       
+    Papa               4                                                                       
+    Quebec             6                                                                       
+    Romeo              5                                                                       
+    Sierra             6                                                                       
+    Tango              5                                                                       
+    Uniform            7                                                                       
+    Victor             6                                                                       
+    Whiskey            7                                                                       
+    X-Ray              5                                                                       
+    Zulu               4                                                                       
+                                                                                               
+                                                                                               
+-->main.Members[0].Count = 0                                                                   
+-->main.Members[1].Count = 1                                                                   
+-->main.Members[2].Count = 2                                                                   
+-->main.Members[3].Count = 3                                                                   
+-->main.Members[7].Count = 7                                                                   
+-->main.Members[8].Count = 8                                                                   
+-->main.Members[9].Count = 9                                                                   
+-->main.Members[10].Count = 10                                                                 
+-->main.Members[11].Count = 11                                                                 
+-->main.Members[12].Count = 12                                                                 
+-->main.Members[13].Count = 13                                                                 
+-->main.Members[14].Count = 14                                                                 
+-->main.Members[15].Count = 15                                                                 
+-->main.Members[16].Count = 16                                                                 
+-->main.Members[17].Count = 17                                                                 
+-->main.Members[18].Count = 18                                                                 
+-->main.Members[19].Count = 19                                                                 
+-->main.Members[20].Count = 20                                                                 
+-->main.Members[21].Count = 21                                                                 
+-->main.Members[22].Count = 22                                                                 
+                                                                                               
+VM "main" state:                                                                               
+                                                                                               
+MainVM                                                                                         
+------                                                                                         
+                                                                                               
+                                                                                               
+    Members                                                                                    
+    -------                                                                                    
+    Name           Count                                                                       
+    -------- -----------                                                                       
+    Alpha              0                                                                       
+    Beta               1                                                                       
+    Charlie            2                                                                       
+    Delta              3                                                                       
+    Echo               4                                                                       
+    Hotel              5                                                                       
+    Indigo             6                                                                       
+    Juliette           7                                                                       
+    Kilo               8                                                                       
+    Lima               9                                                                       
+    Mike              10                                                                       
+    November          11                                                                       
+    Oscar             12                                                                       
+    Papa              13                                                                       
+    Quebec            14                                                                       
+    Romeo             15                                                                       
+    Sierra            16                                                                       
+    Tango             17                                                                       
+    Uniform           18                                                                       
+    Victor            19                                                                       
+    Whiskey           20                                                                       
+    X-Ray             21                                                                       
+    Zulu              22                                                                       
+                                                                                               
+                                                                                               
+                                                                                               

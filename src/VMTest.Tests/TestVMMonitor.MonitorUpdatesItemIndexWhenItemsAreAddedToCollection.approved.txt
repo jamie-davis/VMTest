@@ -1,0 +1,40 @@
+﻿About to edit item charlie at position 1                                                       
+-->vm.VMCollection[1].Number = 1                                                               
+Done                                                                                           
+About to insert item Beta at position 1                                                        
+-->vm.VMCollection.Count = 4                                                                   
+-->vm.VMCollection.Item[] changed                                                              
+-->vm.VMCollection Item inserted at [1] =                                                      
+                                                                                               
+Text      Number                                                                               
+---- -----------                                                                               
+Beta           0                                                                               
+                                                                                               
+Done                                                                                           
+About to edit item charlie at position 2                                                       
+-->vm.VMCollection[2].Number = 2                                                               
+Done                                                                                           
+New VM state:                                                                                  
+                                                                                               
+VM "vm" state:                                                                                 
+                                                                                               
+VM3                                                                                            
+---                                                                                            
+                                                                                               
+                                                                                               
+    VMCollection                                                                               
+    ------------                                                                               
+    Text         Number                                                                        
+    ------- -----------                                                                        
+    Alpha             0                                                                        
+    Beta              0                                                                        
+    Charlie           2                                                                        
+    Delta             0                                                                        
+                                                                                               
+    VMList                                                                                     
+    ------                                                                                     
+    Text      Number                                                                           
+    ---- -----------                                                                           
+                                                                                               
+                                                                                               
+                                                                                               
