@@ -1,0 +1,5 @@
+﻿-->main.Component1.Index = 1000                                                                
+-->main.Component2.Index = 2000                                                                
+-->main.Components[2].Index = 500                                                              
+-->main.Components[2].Members[1].Count = 50                                                    
+                                                                                               

@@ -402,7 +402,6 @@ namespace VMTest.Tests.ObjectReporting
             Approvals.Verify(_output.Report);
         }
 
-
         [Test]
         public void ObjectReporterCanReportACollection()
         {
@@ -418,6 +417,20 @@ namespace VMTest.Tests.ObjectReporting
             Approvals.Verify(_output.Report);
         }
 
+        [Test]
+        public void NullObjectPropetiesAreReportedCorrectly()
+        {
+            //Arrange
+            var item = new TypeWithChild("A", 1, "2015-07-27");
+            item.Child = null;
+            var reporter = new ObjectReporter<TypeWithChild>(ReportType.Table);
 
+            //Act
+            reporter.Report(item, _output);
+
+            //Assert
+            Console.WriteLine(_output.Report);
+            Approvals.Verify(_output.Report);
+        }
     }
 }

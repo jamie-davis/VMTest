@@ -1,0 +1,28 @@
+﻿About to modify item 1:                                                                        
+-->vm.Items[1].VM2.VM.Text = Item 1                                                            
+Removing item 0:                                                                               
+-->vm.Items.Count = 2                                                                          
+-->vm.Items.Item[] changed                                                                     
+-->vm.Items Item at [0] removed =                                                              
+                                                                                               
+IndexedItem                                                                                    
+-----------                                                                                    
+                                                                                               
+                                                                                               
+    VM2                                                                                        
+    ---                                                                                        
+    Text                 Number                                                                
+    --------------- -----------                                                                
+    IndexedItem VM2           1                                                                
+                                                                                               
+        VM                                                                                     
+        --                                                                                     
+        Text          Number                                                                   
+        -------- -----------                                                                   
+        VM2 Text          10                                                                   
+                                                                                               
+                                                                                               
+                                                                                               
+About to modify item 0:                                                                        
+-->vm.Items[0].VM2.VM.Text = Item 0                                                            
+                                                                                               

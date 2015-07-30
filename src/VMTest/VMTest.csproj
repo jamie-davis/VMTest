@@ -49,6 +49,7 @@
     <Compile Include="ObjectReporting\ObjectReporter.cs" />
     <Compile Include="ReportType.cs" />
     <Compile Include="Utilities\MethodInvoker.cs" />
+    <Compile Include="Utilities\ExpressionDebugUtils.cs" />
     <Compile Include="VMMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VMNotTrackedException.cs" />

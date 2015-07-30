@@ -21,14 +21,36 @@ namespace VMTest
     {
         abstract internal class VMInfo
         {
+            protected VMMonitor Container { get; set; }
             public INotifyPropertyChanged Notifications { get; set; }
+
             public string Name { get; set; }
+
+            protected VMInfo Parent { get; private set; }
+
+            public string FullName
+            {
+                get
+                {
+                    if (Parent == null)
+                        return Name;
+
+                    return string.Format("{0}.{1}", Parent.FullName, Name);
+                }
+            }
+
             public Type VMType { get; set; }
 
             public abstract void ReportState(IInfoAccess infoAccess, ReportType reportType);
             public abstract void Detach();
 
             public abstract object GetValue();
+
+            protected VMInfo(VMMonitor container, VMInfo parent)
+            {
+                Container = container;
+                Parent = parent;
+            }
         }
 
         internal class TypedVMInfo<T> : VMInfo where T : class, INotifyPropertyChanged
@@ -38,9 +60,9 @@ namespace VMTest
             private readonly Output _output;
             private readonly Dictionary<string, VMInfo> _notifyingChildren = new Dictionary<string, VMInfo>();
             private readonly Dictionary<string, VMInfo> _notifyingCollections = new Dictionary<string, VMInfo>(); 
-            private readonly Dictionary<string, VMInfo> _simpleCollections = new Dictionary<string, VMInfo>(); 
-            
-            public TypedVMInfo(Output output, T vm, string name)
+            private readonly Dictionary<string, VMInfo> _simpleCollections = new Dictionary<string, VMInfo>();
+
+            public TypedVMInfo(Output output, T vm, string name, VMMonitor container, VMInfo parent) : base(container, parent)
             {
                 VM = vm;
                 Name = name;
@@ -118,7 +140,7 @@ namespace VMTest
                             existing.Detach();
                         }
 
-                        _notifyingChildren[prop.Name] = new TypedVMInfo<TProp>(_output, item, Name + "." + prop.Name)
+                        _notifyingChildren[prop.Name] = new TypedVMInfo<TProp>(_output, item, prop.Name, Container, this)
                         {
                             VMType = item.GetType()
                         };
@@ -140,7 +162,7 @@ namespace VMTest
                             existing.Detach();
                         }
 
-                        _notifyingCollections[prop.Name] = new TypedVMNotifyingCollectionInfo<TProp>(_output, item, Name + "." + prop.Name)
+                        _notifyingCollections[prop.Name] = new TypedVMNotifyingCollectionInfo<TProp>(_output, item, prop.Name, Container, this)
                         {
                             VMType = item.GetType()
                         };
@@ -162,7 +184,7 @@ namespace VMTest
                             existing.Detach();
                         }
 
-                        _simpleCollections[prop.Name] = new TypedVMCollectionInfo<TProp>(_output, item, Name + "." + prop.Name)
+                        _simpleCollections[prop.Name] = new TypedVMCollectionInfo<TProp>(_output, item, prop.Name, Container, this)
                         {
                             VMType = item.GetType()
                         };
@@ -171,6 +193,7 @@ namespace VMTest
             }
 
             public T VM { get; private set; }
+
             public override void ReportState(IInfoAccess infoAccess, ReportType reportType)
             {
                 infoAccess.ReportState(this, reportType);
@@ -196,21 +219,22 @@ namespace VMTest
 
             private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
-                if (!ReferenceEquals(sender, VM))
-                    return;
-
-                var prop = FindPropertyOnVMType(e.PropertyName);
-                if (prop == null)
+                lock (Container)
                 {
-                    _output.WrapLine("-->{0}.{1} Change event for unknown property.", Name, e.PropertyName);
-                    return;
-                }
+                    if (!ReferenceEquals(sender, VM))
+                        return;
 
-                lock (_lock)
-                {
+                    var prop = FindPropertyOnVMType(e.PropertyName);
+                    if (prop == null)
+                    {
+                        _output.WrapLine("-->{0}.{1} Change event for unknown property.", FullName, e.PropertyName);
+                        return;
+                    }
+                    
                     VMInfo child;
                     if (_notifyingChildren.TryGetValue(e.PropertyName, out child))
                     {
+
                         child.Detach();
                         _notifyingChildren.Remove(e.PropertyName);
                     }
@@ -228,8 +252,8 @@ namespace VMTest
                     }
 
                     CallAttachChild(prop);
+                    ReportValue(sender, e, prop);
                 }
-                ReportValue(sender, e, prop);
             }
 
             private PropertyInfo FindPropertyOnVMType(string propertyName)
@@ -244,11 +268,11 @@ namespace VMTest
             {
                 if (prop.GetIndexParameters().Any())
                 {
-                    _output.WrapLine("-->{0}.{1} changed", Name, e.PropertyName);
+                    _output.WrapLine("-->{0}.{1} changed", FullName, e.PropertyName);
                     return;
                 }
 
-                _output.Wrap("-->{0}.{1} = ", Name, e.PropertyName);
+                _output.Wrap("-->{0}.{1} = ", FullName, e.PropertyName);
 
                 
                 var value = prop.GetValue(sender, null);
@@ -287,8 +311,8 @@ namespace VMTest
 
             private readonly Output _output;
             private readonly List<VMInfo> _notifyingChildren = new List<VMInfo>();
-            
-            public TypedVMNotifyingCollectionInfo(Output output, T vm, string name)
+
+            public TypedVMNotifyingCollectionInfo(Output output, T vm, string name, VMMonitor container, VMInfo parent) : base(container, parent)
             {
                 VM = vm;
                 Name = name;
@@ -370,10 +394,15 @@ namespace VMTest
                     _notifyingChildren.Add(null);
                 }
 
-                _notifyingChildren[index] = new TypedVMInfo<TItem>(_output, item, Name + "[" + index + "]")
+                _notifyingChildren[index] = new TypedVMInfo<TItem>(_output, item, MakeName(index), Container, Parent)
                 {
                     VMType = item.GetType()
                 };                
+            }
+
+            private string MakeName(int index)
+            {
+                return Name + "[" + index + "]";
             }
 
             public T VM { get; private set; }
@@ -458,7 +487,7 @@ namespace VMTest
                 foreach (var notifyingChild in _notifyingChildren)
                 {
                     if (notifyingChild != null)
-                        notifyingChild.Name = string.Format("{0}[{1}]", Name, index);
+                        notifyingChild.Name = MakeName(index);
                     ++index;
                 }
             }
@@ -513,7 +542,7 @@ namespace VMTest
 
             private void ReportNewItem(object item, int index)
             {
-                _output.WrapLine("-->{0} Item inserted at [{1}] = ", Name, index);
+                _output.WrapLine("-->{0} Item inserted at [{1}] = ", FullName, index);
                 if (Type.GetTypeCode(item.GetType()) == TypeCode.Object)
                 {
                     ReportObject(item);
@@ -526,7 +555,7 @@ namespace VMTest
             private void ReportRemovedItem(VMInfo item, int index)
             {
                 var value = item == null ? null : item.GetValue();
-                _output.WrapLine("-->{0} Item at [{1}] removed = ", Name, index);
+                _output.WrapLine("-->{0} Item at [{1}] removed = ", FullName, index);
                 if (value == null)
                 {
                     _output.WriteLine();
@@ -543,7 +572,7 @@ namespace VMTest
             private void ReportReplacedItem(VMInfo item, object insertedItem, int index)
             {
                 var value = item == null ? null : item.GetValue();
-                _output.Wrap("-->{0} Item at [{1}] ", Name, index);
+                _output.Wrap("-->{0} Item at [{1}] ", FullName, index);
                 if (value == null)
                 {
                     _output.Wrap("Replaced By : ");
@@ -575,7 +604,7 @@ namespace VMTest
 
             private void ReportMovedItem(VMInfo item, int oldIndex, int newIndex)
             {
-                _output.WrapLine("-->{0} Item at [{1}] Moved to [{2}]= ", Name, oldIndex, newIndex);
+                _output.WrapLine("-->{0} Item at [{1}] Moved to [{2}]= ", FullName, oldIndex, newIndex);
             }
 
             private void InsertBlankChild(object item, int index)
@@ -588,7 +617,7 @@ namespace VMTest
 
             private void ReportValue(object sender, PropertyChangedEventArgs e, PropertyInfo prop)
             {
-                _output.Wrap("-->{0}.{1} = ", Name, e.PropertyName);
+                _output.Wrap("-->{0}.{1} = ", FullName, e.PropertyName);
                 
                 var value = prop.GetValue(sender, null);
 
@@ -626,8 +655,8 @@ namespace VMTest
 
             private readonly Output _output;
             private readonly List<VMInfo> _notifyingChildren = new List<VMInfo>();
-            
-            public TypedVMCollectionInfo(Output output, T vm, string name)
+
+            public TypedVMCollectionInfo(Output output, T vm, string name, VMMonitor container, VMInfo parent) : base(container, parent)
             {
                 VM = vm;
                 Name = name;
@@ -707,7 +736,7 @@ namespace VMTest
                     _notifyingChildren.Add(null);
                 }
 
-                _notifyingChildren[index] = new TypedVMInfo<TItem>(_output, item, Name + "[" + index + "]")
+                _notifyingChildren[index] = new TypedVMInfo<TItem>(_output, item, Name + "[" + index + "]", Container, Parent)
                 {
                     VMType = item.GetType()
                 };                
@@ -738,9 +767,14 @@ namespace VMTest
                 return VM;
             }
 
+            private string MakeName(int index)
+            {
+                return FullName + "[" + index + "]";
+            }
+
             private void ReportValue(object sender, PropertyChangedEventArgs e, PropertyInfo prop)
             {
-                _output.Wrap("-->{0}.{1} = ", Name, e.PropertyName);
+                _output.Wrap("-->{0}.{1} = ", FullName, e.PropertyName);
                 
                 var value = prop.GetValue(sender, null);
 
@@ -793,7 +827,7 @@ namespace VMTest
 
         private TypedVMInfo<T> TrackVM<T>(T vm, string name) where T : class, INotifyPropertyChanged
         {
-            var vmInfo = new TypedVMInfo<T>(_output, vm, name)
+            var vmInfo = new TypedVMInfo<T>(_output, vm, name, this, null)
             {
                 Notifications = vm, 
                 VMType = vm.GetType()
@@ -812,7 +846,7 @@ namespace VMTest
             {
                 if (heading != null)
                 {
-                    _output.WrapLine(heading, vmInfo.Name);
+                    _output.WrapLine(heading, vmInfo.FullName);
                     _output.WriteLine();
                 }
 

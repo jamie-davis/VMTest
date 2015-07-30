@@ -192,7 +192,7 @@ namespace VMTest.ObjectReporting
                var typedMethod = method.MakeGenericMethod(typeof(T), typeof(TProp));
                MethodInvoker.Invoke(typedMethod, null, getterFn, rep, property.Name);
             }
-
+ 
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -236,11 +236,27 @@ namespace VMTest.ObjectReporting
 
         private static Expression<Func<TItem, IEnumerable<TProp>>>  MakeEnumerableGetterFn<TItem, TProp>(PropertyInfo property)
         {
+            var result = Expression.Variable(typeof (TProp[]));
             var item = Expression.Parameter(typeof (TItem));
+            var value = Expression.Parameter(typeof (TProp));
             var getter = Expression.MakeMemberAccess(item, property);
-            var makeArray = Expression.NewArrayInit(typeof (TProp), getter);
+            var itemIsNotNull = Expression.Not(
+                Expression.Equal(item, 
+                    Expression.Constant(null, typeof(TItem))));
+            var valueIsNull = Expression.Equal(value, Expression.Constant(null, typeof(TProp)));
+            var getValue = Expression.Assign(value, getter);
+            var tryGetValue = Expression.IfThen(itemIsNotNull, getValue);
+            var makeEmptyArray = Expression.Assign(result, 
+                Expression.NewArrayBounds(typeof (TProp), Expression.Constant(0)));
+            var makeItemArray = Expression.Assign(result, 
+                Expression.NewArrayInit(typeof (TProp), getter));
+            var makeArray = Expression.IfThenElse(valueIsNull, makeEmptyArray, makeItemArray);
+            var block = Expression.Block(new [] {value, result},
+                tryGetValue,
+                makeArray, 
+                result);
             var getterFn = Expression.Lambda<Func<TItem, IEnumerable<TProp>>>(
-                makeArray, new[] {item});
+                block, new[] {item});
             return getterFn;
         }
 

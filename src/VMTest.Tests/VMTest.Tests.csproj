@@ -55,7 +55,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptanceTests\AcceptanceTestVM.cs" />
     <Compile Include="AcceptanceTests\BaselinePropertyAndCollectionNotifications.cs" />
+    <Compile Include="AcceptanceTests\CollectionMember.cs" />
+    <Compile Include="AcceptanceTests\NotificationsFromAggregateObject.cs" />
     <Compile Include="ObjectReporting\TestObjectReporter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TestVMMonitor.cs" />

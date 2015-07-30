@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
+using System.Linq.Expressions;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
-using TestConsoleLib;
-using VMTest.Tests.Annotations;
 using VMTest.Tests.TestingUtilities;
 
 namespace VMTest.Tests.AcceptanceTests
@@ -18,34 +15,6 @@ namespace VMTest.Tests.AcceptanceTests
         private VMMonitor _monitor;
 
         #region Types for test
-
-        class CollectionMember : AcceptanceTestVM
-        {
-            private string _name;
-            private int _count;
-
-            public string Name
-            {
-                get { return _name; }
-                set
-                {
-                    if (value == _name) return;
-                    _name = value;
-                    OnPropertyChanged("Name");
-                }
-            }
-
-            public int Count
-            {
-                get { return _count; }
-                set
-                {
-                    if (value == _count) return;
-                    _count = value;
-                    OnPropertyChanged("Count");
-                }
-            }
-        }
 
         class MainVM : AcceptanceTestVM
         {
@@ -74,23 +43,7 @@ namespace VMTest.Tests.AcceptanceTests
             public MainVM()
             {
                 Members = new ObservableCollection<CollectionMember>();
-                var members = new[]
-                {
-                    "Alpha", "Beta", "Charlie",
-                    "Delta", "Echo", "Hotel",
-                    "Indigo", "Juliette", "Kilo",
-                    "Lima", "Mike", "November",
-                    "Oscar", "Papa", "Quebec",
-                    "Romeo", "Sierra", "Tango",
-                    "Uniform", "Victor", "Whiskey",
-                    "X-Ray", "Zulu"
-                }
-                .Select(n => new CollectionMember
-                    {Name = n, Count = n.Length});
-                foreach (var member in members)
-                {
-                    Members.Add(member);
-                }
+                CollectionMember.InitialiseMembersCollection(Members);
             }
         }
         #endregion
@@ -166,18 +119,6 @@ namespace VMTest.Tests.AcceptanceTests
 
             //Assert
             Approvals.Verify(_monitor.Report);
-        }
-    }
-
-    internal class AcceptanceTestVM : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

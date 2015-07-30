@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
@@ -14,6 +15,8 @@ namespace VMTest.Tests
     [UseReporter(typeof (CustomReporter))]
     public class TestVMMonitor
     {
+        #region Types for test
+
         class VM : INotifyPropertyChanged
         {
             private string _text;
@@ -136,6 +139,83 @@ namespace VMTest.Tests
                 if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        class VMIndexPassDown : INotifyPropertyChanged
+        {
+            private ObservableCollection<IndexedItem> _items;
+
+            public ObservableCollection<IndexedItem> Items
+            {
+                get { return _items; }
+                set
+                {
+                    if (Equals(value, _items)) return;
+                    _items = value;
+                    OnPropertyChanged("Items");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            [NotifyPropertyChangedInvocator]
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                var handler = PropertyChanged;
+                if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public VMIndexPassDown()
+            {
+                Items = new ObservableCollection<IndexedItem>();
+                var itemsToAdd = Enumerable.Range(0, 3)
+                    .Select(n => new IndexedItem());
+                foreach (var indexedItem in itemsToAdd)
+                {
+                    Items.Add(indexedItem);
+                }
+            }
+        }
+
+        class IndexedItem : INotifyPropertyChanged
+        {
+            private VM2 _vm2;
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            [NotifyPropertyChangedInvocator]
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                var handler = PropertyChanged;
+                if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public VM2 VM2
+            {
+                get { return _vm2; }
+                set
+                {
+                    if (Equals(value, _vm2)) return;
+                    _vm2 = value;
+                    OnPropertyChanged("VM2");
+                }
+            }
+
+            public IndexedItem()
+            {
+                VM2 = new VM2
+                {
+                    Number = 1,
+                    Text = "IndexedItem VM2",
+                    VM = new VM()
+                    {
+                        Number = 10,
+                        Text = "VM2 Text"
+                    }
+                };
+            }
+
+        }
+
+        #endregion
 
         [Test]
         public void InitialStateIsDisplayed()
@@ -845,5 +925,28 @@ namespace VMTest.Tests
             Console.WriteLine(vmt.Report);
             Approvals.Verify(vmt.Report);
         }
+
+
+        [Test]
+        public void IndexChangesArePassedDown()
+        {
+            //Arrange
+            var vm = new VMIndexPassDown();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vmt.WriteLine("About to modify item 1:");
+            vm.Items[1].VM2.VM.Text = "Item 1";
+            vmt.WriteLine("Removing item 0:");
+            vm.Items.RemoveAt(0);
+            vmt.WriteLine("About to modify item 0:");
+            vm.Items[0].VM2.VM.Text = "Item 0";
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
     }
 }
