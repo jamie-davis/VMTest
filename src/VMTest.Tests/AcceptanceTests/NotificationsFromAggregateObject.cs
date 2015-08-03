@@ -159,7 +159,8 @@ namespace VMTest.Tests.AcceptanceTests
         }
 
         [Test]
-        public void AggregateComponentNamesChangeCorrectly()
+        public void 
+            AggregateComponentNamesChangeCorrectly()
         {
             //Arrange
             var main = new AggregateVM();

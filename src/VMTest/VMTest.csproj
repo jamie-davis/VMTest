@@ -46,10 +46,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInfoAccess.cs" />
     <Compile Include="ObjectReporting\ObjectReporter.cs" />
     <Compile Include="ReportType.cs" />
+    <Compile Include="TypedVMCollectionInfo.cs" />
+    <Compile Include="TypedVMInfo.cs" />
+    <Compile Include="TypedVMNotifyingCollectionInfo.cs" />
     <Compile Include="Utilities\MethodInvoker.cs" />
     <Compile Include="Utilities\ExpressionDebugUtils.cs" />
+    <Compile Include="VMInfo.cs" />
     <Compile Include="VMMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VMNotTrackedException.cs" />

@@ -215,6 +215,84 @@ namespace VMTest.Tests
 
         }
 
+        public class VMDataErrorInfo : INotifyPropertyChanged, IDataErrorInfo
+        {
+            private int _a;
+            private int _b;
+            private int _c;
+            private int _d;
+            private Dictionary<string, string> _errors = new Dictionary<string, string>();
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            [NotifyPropertyChangedInvocator]
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                var handler = PropertyChanged;
+                if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+            public string this[string columnName]
+            {
+                get
+                {
+                    string value = null;
+                    _errors.TryGetValue(columnName, out value);
+                    return value;
+                }
+            }
+
+            public string Error { get; private set; }
+
+            public int A
+            {
+                get { return _a; }
+                set
+                {
+                    if (value == _a) return;
+                    _a = value;
+                    OnPropertyChanged("A");
+                }
+            }
+
+            public int B
+            {
+                get { return _b; }
+                set
+                {
+                    if (value == _b) return;
+                    _b = value;
+                    OnPropertyChanged("B");
+                }
+            }
+
+            public int C
+            {
+                get { return _c; }
+                set
+                {
+                    if (value == _c) return;
+                    _c = value;
+                    OnPropertyChanged("C");
+                }
+            }
+
+            public int D
+            {
+                get { return _d; }
+                set
+                {
+                    if (value == _d) return;
+                    _d = value;
+                    OnPropertyChanged("D");
+                }
+            }
+
+            public void SetError(string field, string message)
+            {
+                _errors[field] = message;
+            }
+        }
+
         #endregion
 
         [Test]
@@ -926,7 +1004,6 @@ namespace VMTest.Tests
             Approvals.Verify(vmt.Report);
         }
 
-
         [Test]
         public void IndexChangesArePassedDown()
         {
@@ -948,5 +1025,20 @@ namespace VMTest.Tests
             Approvals.Verify(vmt.Report);
         }
 
+        [Test]
+        public void DateErrorsAreMonitored()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.SetError("A", "BAD");
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
     }
 }
