@@ -6,6 +6,7 @@ using System.Linq;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
+using TestConsoleLib.ObjectReporting;
 using VMTest.Tests.Annotations;
 using VMTest.Tests.TestingUtilities;
 
