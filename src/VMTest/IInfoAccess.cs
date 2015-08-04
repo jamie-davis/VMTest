@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using TestConsoleLib.ObjectReporting;
 
 namespace VMTest
 {

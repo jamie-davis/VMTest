@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using TestConsoleLib;
-using VMTest.ObjectReporting;
+using TestConsoleLib.ObjectReporting;
 using VMTest.Utilities;
 
 namespace VMTest
