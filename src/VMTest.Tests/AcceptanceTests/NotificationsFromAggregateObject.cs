@@ -3,6 +3,7 @@ using System.Linq;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
+using TestConsoleLib.ObjectReporting;
 using VMTest.Tests.TestingUtilities;
 
 namespace VMTest.Tests.AcceptanceTests

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using TestConsoleLib;
-using VMTest.ObjectReporting;
+using TestConsoleLib.ObjectReporting;
+using VMTest.Utilities;
 
 namespace VMTest
 {

@@ -49,9 +49,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TestConsole, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\TestConsole.1.0.2.0\lib\net40\TestConsole.dll</HintPath>
+    <Reference Include="TestConsole, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TestConsole.1.0.3.0\lib\net40\TestConsole.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -59,7 +59,6 @@
     <Compile Include="AcceptanceTests\BaselinePropertyAndCollectionNotifications.cs" />
     <Compile Include="AcceptanceTests\CollectionMember.cs" />
     <Compile Include="AcceptanceTests\NotificationsFromAggregateObject.cs" />
-    <Compile Include="ObjectReporting\TestObjectReporter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="TestVMMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
