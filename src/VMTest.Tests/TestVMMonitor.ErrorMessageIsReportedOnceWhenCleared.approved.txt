@@ -1,0 +1,11 @@
+﻿-->vm.A = 1                                                                                    
+-->vm Error = "Error for class"                                                                
+-->vm.B = 1                                                                                    
+-->vm Error = "Error for class"                                                                
+-->vm.C = 1                                                                                    
+-->vm Error = "Error for class"                                                                
+-->vm.A = 2                                                                                    
+-->vm Error = ""                                                                               
+-->vm.B = 2                                                                                    
+-->vm.C = 2                                                                                    
+                                                                                               

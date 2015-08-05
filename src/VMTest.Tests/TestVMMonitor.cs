@@ -292,6 +292,11 @@ namespace VMTest.Tests
             {
                 _errors[field] = message;
             }
+
+            public void ClassError(string errorForClass)
+            {
+                Error = errorForClass;
+            }
         }
 
         #endregion
@@ -1027,7 +1032,7 @@ namespace VMTest.Tests
         }
 
         [Test]
-        public void DateErrorsAreMonitored()
+        public void DataErrorsAreMonitored()
         {
             //Arrange
             var vm = new VMDataErrorInfo();
@@ -1036,6 +1041,133 @@ namespace VMTest.Tests
 
             //Act
             vm.SetError("A", "BAD");
+            vm.A = 1;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void DataErrorsAreAlwaysReported()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.SetError("A", "BAD");
+            vm.A = 1;
+            vm.A = 2;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void DataErrorsAreReportedBlankOnceWhenCleared()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.SetError("A", "BAD");
+            vm.A = 1;
+            vm.SetError("A", null);
+            vm.A = 2;
+            vm.A = 3;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void FieldDataErrorsAreTrackedIndividually()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.SetError("A", "BAD A");
+            vm.SetError("B", "BAD B");
+            vm.A = 1;
+            vm.B = 1;
+            vm.SetError("A", null);
+            vm.A = 2;
+            vm.B = 2;
+            vm.A = 3;
+            vm.B = 3;
+            vm.SetError("B", string.Empty);
+            vm.A = 4;
+            vm.B = 4;
+            vm.A = 5;
+            vm.B = 5;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void ErrorMessageIsTracked()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.ClassError("Error for class");
+            vm.A = 1;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void ErrorMessageIsReportedWhileSet()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.ClassError("Error for class");
+            vm.A = 1;
+            vm.B = 1;
+            vm.C = 1;
+
+            //Assert
+            Console.WriteLine(vmt.Report);
+            Approvals.Verify(vmt.Report);
+        }
+
+        [Test]
+        public void ErrorMessageIsReportedOnceWhenCleared()
+        {
+            //Arrange
+            var vm = new VMDataErrorInfo();
+            var vmt = new VMMonitor();
+            vmt.Monitor(vm, "vm", ReportType.NoReport);
+
+            //Act
+            vm.ClassError("Error for class");
+            vm.A = 1;
+            vm.B = 1;
+            vm.C = 1;
+            vm.ClassError(null);
+            vm.A = 2;
+            vm.B = 2;
+            vm.C = 2;
 
             //Assert
             Console.WriteLine(vmt.Report);

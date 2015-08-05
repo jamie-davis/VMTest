@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataErrorInfoMonitor.cs" />
     <Compile Include="IInfoAccess.cs" />
     <Compile Include="TypedVMCollectionInfo.cs" />
     <Compile Include="TypedVMInfo.cs" />

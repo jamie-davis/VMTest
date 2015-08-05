@@ -27,8 +27,9 @@ namespace VMTest
             VM = vm;
             Name = name;
             _output = output;
-            _errorInfoMonitor = new DataErrorInfoMonitor(output, vm);
             vm.PropertyChanged += OnPropertyChanged;
+            
+            _errorInfoMonitor = new DataErrorInfoMonitor(output, this, vm);
 
             SignUpForChildNotifications();
         }
@@ -262,13 +263,6 @@ namespace VMTest
         {
             var reporter = new ObjectReporter<TValue>();
             reporter.Report(value, _output);
-        }
-    }
-
-    internal class DataErrorInfoMonitor
-    {
-        public DataErrorInfoMonitor(Output output, object vm)
-        {
         }
     }
 }

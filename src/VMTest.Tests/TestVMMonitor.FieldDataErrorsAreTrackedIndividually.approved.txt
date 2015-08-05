@@ -1,0 +1,17 @@
+﻿-->vm.A = 1                                                                                    
+-->vm.A Data Error = "BAD A"                                                                   
+-->vm.B = 1                                                                                    
+-->vm.B Data Error = "BAD B"                                                                   
+-->vm.A = 2                                                                                    
+-->vm.A Data Error = ""                                                                        
+-->vm.B = 2                                                                                    
+-->vm.B Data Error = "BAD B"                                                                   
+-->vm.A = 3                                                                                    
+-->vm.B = 3                                                                                    
+-->vm.B Data Error = "BAD B"                                                                   
+-->vm.A = 4                                                                                    
+-->vm.B = 4                                                                                    
+-->vm.B Data Error = ""                                                                        
+-->vm.A = 5                                                                                    
+-->vm.B = 5                                                                                    
+                                                                                               

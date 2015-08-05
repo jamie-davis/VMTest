@@ -1,0 +1,5 @@
+﻿-->vm.A = 1                                                                                    
+-->vm.A Data Error = "BAD"                                                                     
+-->vm.A = 2                                                                                    
+-->vm.A Data Error = "BAD"                                                                     
+                                                                                               

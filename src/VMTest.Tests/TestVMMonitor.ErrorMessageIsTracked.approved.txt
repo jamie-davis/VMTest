@@ -1,0 +1,3 @@
+﻿-->vm.A = 1                                                                                    
+-->vm Error = "Error for class"                                                                
+                                                                                               
