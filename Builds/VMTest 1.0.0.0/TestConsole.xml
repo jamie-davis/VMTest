@@ -1,0 +1,1052 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestConsole</name>
+    </assembly>
+    <members>
+        <member name="T:TestConsoleLib.ObjectReporting.ObjectReporter`1">
+            <summary>
+            Report the state of an object. If the object implements <see cref="T:System.ComponentModel.INotifyPropertyChanged"/>
+            report all child objects. If the object does not implement <see cref="T:System.ComponentModel.INotifyPropertyChanged"/>,
+            only report on its properties.
+            </summary>
+        </member>
+        <member name="T:TestConsoleLib.ObjectReporting.ReportType">
+            <summary>
+            Settings that allow the user to specify the type of report used to display a VM's state.
+            </summary>
+        </member>
+        <member name="F:TestConsoleLib.ObjectReporting.ReportType.Default">
+            <summary>
+            Use the default for the context
+            </summary>
+        </member>
+        <member name="F:TestConsoleLib.ObjectReporting.ReportType.PropertyList">
+            <summary>
+            Display the VM state as a property list
+            </summary>
+        </member>
+        <member name="F:TestConsoleLib.ObjectReporting.ReportType.Table">
+            <summary>
+            Display the VM state as a single row table
+            </summary>
+        </member>
+        <member name="F:TestConsoleLib.ObjectReporting.ReportType.NoReport">
+            <summary>
+            Do not display the VM's state
+            </summary>
+        </member>
+        <member name="T:TestConsoleLib.Output">
+            <summary>
+            A class providing a buffer for recording test output. Various formatting methods are provided
+            to create text with a readable layout.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.IConsoleOperations">
+            <summary>
+            The base set of operations supported for writing data to the console.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.WriteLine(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, and move to the beginning of the next line.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.Write(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.WrapLine(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, using word wrapping. Then move to the beginning of the next line.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.Wrap(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, but use word wrapping.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.Write(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.WriteLine(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console, add a newline.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.FormatTable``1(System.Collections.Generic.IEnumerable{``0},TestConsole.OutputFormatting.ReportFormattingOptions,System.String)">
+            <summary>
+            Format an enumerable set of rows as a tabular report.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="items">The items to be formatted.</param>
+            <param name="options">Options that effect the way in which the table is formatted.</param>
+            <param name="columnSeperator">The text to use to seperate columns.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.FormatTable``1(TestConsole.OutputFormatting.Report{``0})">
+            <summary>
+            Format an enumerable set of rows as a tabular report, using a report definition.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="report">The report definition.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleOperations.WriteLine">
+            <summary>
+            Output a new line.
+            </summary>
+        </member>
+        <member name="M:TestConsoleLib.Output.#ctor">
+            <summary>
+            Construct with a default buffer.
+            </summary>
+        </member>
+        <member name="M:TestConsoleLib.Output.#ctor(TestConsole.OutputFormatting.OutputBuffer)">
+            <summary>
+            Construct with a pre-defined buffer.
+            </summary>
+            <param name="buffer">The buffer to use. This may be shared if required.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.WriteLine(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, and move to the beginning of the next line.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.Write(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.WrapLine(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, using word wrapping. Then move to the beginning of the next line.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.Wrap(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, but use word wrapping.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.Write(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.WriteLine(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console, add a newline.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.FormatTable``1(System.Collections.Generic.IEnumerable{``0},TestConsole.OutputFormatting.ReportFormattingOptions,System.String)">
+            <summary>
+            Format an enumerable set of rows as a tabular report.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="items">The items to be formatted.</param>
+            <param name="options">Options that effect the way in which the table is formatted.</param>
+            <param name="columnSeperator">The text to use to seperate columns.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.FormatTable``1(TestConsole.OutputFormatting.Report{``0})">
+            <summary>
+            Format an enumerable set of rows as a tabular report, using a report definition.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="report">The report definition.</param>
+        </member>
+        <member name="M:TestConsoleLib.Output.WriteLine">
+            <summary>
+            Output a new line.
+            </summary>
+        </member>
+        <member name="P:TestConsoleLib.Output.Report">
+            <summary>
+            Access this property to combine the buffered output into a single large string.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.Underliner.Generate(System.String,System.String)">
+            <summary>
+            Generate an underline for the supplied text
+            </summary>
+            <param name="line">The text to underline</param>
+            <returns>The string underlining the provided text</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.IConsoleRenderer">
+            <summary>
+            This interface defines the functionality required to support rendering recorded console activity
+            in the various ways that a the data is used by the toolkit.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.IConsoleInterface">
+            <summary>
+            This interface describes a class that captures output data.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleInterface.Write(System.String)">
+            <summary>
+            Output a string to the console in the current cursor position.
+            </summary>
+            <param name="data">The text to output.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.IConsoleInterface.NewLine">
+            <summary>
+            Output a new line to the console at the current cursor position. The cursor will move the beginning of the next line.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.IConsoleInterface.BufferWidth">
+            <summary>
+            The width of the console buffer. This may be greater than the window width.
+            <seealso cref="P:TestConsole.OutputFormatting.IConsoleInterface.BufferWidth"/>
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.IConsoleInterface.CursorLeft">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.IConsoleInterface.CursorTop">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.IConsoleInterface.Encoding">
+            <summary>
+            The encoding being used by the console.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.CachedRows`1">
+            <summary>
+            Data cached from an <see cref="T:System.Collections.Generic.IEnumerable`1"/> collection. This store can be used to repeatedly format
+            the data at different widths without having to enumerate the original collection multiple times.
+            <seealso cref="T:TestConsole.OutputFormatting.Internal.CachedRow`1"/>
+            <seealso cref="T:TestConsole.OutputFormatting.Internal.CachedColumn"/>
+            </summary>
+            <typeparam name="T">The original row type.</typeparam>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.CachedRowsFactory">
+            <summary>
+            Static class exposing a factory method that allows caches of anonymous types to be constructed.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.CachedRow`1">
+            <summary>
+            A cached row of data. Used in <see cref="T:TestConsole.OutputFormatting.Internal.CachedRows`1"/>.
+            <seealso cref="T:TestConsole.OutputFormatting.Internal.CachedColumn"/>
+            </summary>
+            <typeparam name="T">The original row's type.</typeparam>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.CachedColumn">
+            <summary>
+            A cached column value. Used in <see cref="T:TestConsole.OutputFormatting.Internal.CachedRow`1"/>.
+            <seealso cref="T:TestConsole.OutputFormatting.Internal.CachedRows`1"/>
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ConsoleWriter">
+            <summary>
+            This class performs write operations on a <see cref="T:TestConsole.OutputFormatting.IConsoleInterface"/>.
+            <seealso cref="T:TestConsole.OutputFormatting.Internal.TextControlItem"/>
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ColumnExpander">
+            <summary>
+            Stretch columns in a column sizer list to fill the available width.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnExpander.FillAvailableSpace(System.Int32,System.Int32,TestConsole.OutputFormatting.Internal.ColumnSizingParameters,System.Boolean)">
+            <summary>
+            Perform the stretch operation. This method takes any stacked columns into account.
+            </summary>
+            <param name="width">The available width.</param>
+            <param name="seperatorOverhead">The amount of space occupied by column seperators.</param>
+            <param name="parameters">The column sizing parameters for this operation.</param>
+            <param name="maximiseWidth">True to systematically use all of the available width when sizing the columns.</param>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ColumnFormat">
+            <summary>
+            This class is used to format values that are to be displayed in a column.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnFormat.#ctor(System.String,System.Type,TestConsole.OutputFormatting.Internal.ColumnAlign,System.Int32,System.String,System.String)">
+            <summary>
+            Constructor. All parameters other than heading are optional, and designed to be set by name. For example:
+            
+                var format = new ColumnFormat("My Col", alignment: ColumnAlign.Right);
+            </summary>
+            <param name="heading">The heading text for the column</param>
+            <param name="type">The type of the data expected for the column. When specified, this allows some parameters to be given sensible defaults.</param>
+            <param name="alignment">Whether the column is left or right aligned. If <see cref="F:TestConsole.OutputFormatting.Internal.ColumnAlign.Auto"/> is set, it will be right aligned for numeric types, or else left aligned. 
+            If no value is provided for <see cref="!:type"/>, left will be used.</param>
+            <param name="decimalPlaces">The number of decimal places to show. This will only apply to Decimal or Double values.</param>
+            <param name="format">A .NET format string that will be applied to the data. If this is specified, the decimal places setting will be ignored.</param>
+            <param name="width">A string describing the width required for this column. If a string containing a number is provided, this will be the columns fixed width, if an asterisk is provided, this column will be as wide as possible. If no value is provided, the column's actual width will be determined from its contents.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnSizer.MinWidth(System.Int32)">
+            <summary>
+            Answers the question: how wide does the column have to be to format every value with no more than <see cref="!:maxLineBreaks"/>?
+            <para/>
+            This method needs to take the width restrictions into account, so for some columns, it may be that the width returned actually
+            results in a different number of linebreaks than expected.
+            </summary>
+            <param name="maxLineBreaks">The maximum desired number of line breaks. Zero means "no line breaks allowed".</param>
+            <returns>The number of characters the column needs to be to limit the line breaks to the specified count.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnSizer.GetIdealMinimumWidth">
+            <summary>
+            Returns the width the column needs to be to accomodate the longest word seen so far.
+            </summary>
+            <returns>The calculated width.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ColumnWidthNegotiator">
+            <summary>
+            Caclulate a width for each column in a tablular report.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ColumnWrapper">
+            <summary>
+            A static class responsible for wrapping values into a column.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.WrapValue(System.Object,TestConsole.OutputFormatting.Internal.ColumnFormat,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Given a value for a column, wrap the value into as many lines as required.
+            </summary>
+            <param name="value">The value to be displayed in the column.</param>
+            <param name="format">The column's format specification.</param>
+            <param name="columnWidth">The width allowed for the column.</param>
+            <param name="tabLength">The number of spaces tabs should represent. Please note that actual tabstops are not supported.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <returns>An array of one or more lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.CountWordwrapLineBreaks(System.Object,TestConsole.OutputFormatting.Internal.ColumnFormat,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Given a value for a column, calculate the number of line breaks that need to be added to wrap the value.
+            
+            Hard line breaks in the value are not counted because they are part of the data and cannot be avoided. The 
+            function calculates the effect of setting the column width to a specific value.
+            
+            The function will return zero  if no linebreaks need to be added. This will be the case if the value is small
+            enough that it does not need to be wrapped.
+            </summary>
+            <param name="value">The value to be processed.</param>
+            <param name="format">The column's format specification.</param>
+            <param name="columnWidth">The width allowed for the column.</param>
+            <param name="tabLength">The number of spaces tabs should represent. Please note that actual tabstops are not supported.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <returns>The number of added line breaks.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.WrapAndMeasureValue(System.Object,TestConsole.OutputFormatting.Internal.ColumnFormat,System.Int32,System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Given a value for a column, wrap the value into as many lines as required and calculate the number of line breaks
+            that need to be added.
+            </summary>
+            <param name="value">The value to be displayed in the column.</param>
+            <param name="format">The column's format specification.</param>
+            <param name="columnWidth">The width allowed for the column.</param>
+            <param name="tabLength">The number of spaces tabs should represent. Please note that actual tabstops are not supported.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <param name="wrappedLines">The number of added line breaks.</param>
+            <returns>An array of one or more lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.CountLineBreaks(System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.SplitWord},System.Int32,System.Int32)">
+            <summary>
+            Given a value for a column, calculate the number of line breaks that must be added (i.e. not counting 
+            line breaks intrinsically part of the value, just additional ones due to wrapping).
+            </summary>
+            <param name="words">The words to be displayed in the column.</param>
+            <param name="columnWidth">The width allowed for the column.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <returns>The number of added line breaks.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.WrapAndMeasureWords(System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.SplitWord},TestConsole.OutputFormatting.Internal.ColumnFormat,System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            Given a value for a column, wrap the value into as many lines as required and calculate the number of line breaks
+            that need to be added.
+            </summary>
+            <param name="words">The words to be displayed in the column.</param>
+            <param name="format">The column's format specification.</param>
+            <param name="columnWidth">The width allowed for the column.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <param name="wrappedLines">The number of added line breaks.</param>
+            <returns>An array of one or more lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.BreakWord(TestConsole.OutputFormatting.Internal.SplitWord,System.Int32)">
+            <summary>
+            Break long words into chunks of one row width in length.
+            
+            <see cref="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.BreakWord(TestConsole.OutputFormatting.Internal.SplitWord,System.Int32)"/> guarantees that there will never be a word that 
+            won't fit on a line, which simplifies <see cref="M:TestConsole.OutputFormatting.Internal.ColumnWrapper.WrapValue(System.Object,TestConsole.OutputFormatting.Internal.ColumnFormat,System.Int32,System.Int32,System.Int32)"/>. 
+            </summary>
+            <param name="splitWord">The word to be split.</param>
+            <param name="columnWidth">The width of the column.</param>
+            <returns>An enumerable set of word chunks, one <see cref="!:columnWidth"/> or less wide.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleOperationsImpl.WriteLine(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position, and move to the beginning of the next line.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleOperationsImpl.Write(System.String,System.Object[])">
+            <summary>
+            Output a formatted string at the current cursor position.
+            </summary>
+            <param name="format">A format string.</param>
+            <param name="arg">Replacement args for the format string.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleOperationsImpl.Write(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleOperationsImpl.WriteLine(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Render a renderable object to the console, add a newline.
+            </summary>
+            <param name="renderableData">The object to render.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleOperationsImpl.WriteLine">
+            <summary>
+            Output a new line.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleRedirectTester.IsOutputRedirected">
+            <summary>
+            Determine whether the console's output stream is redirected.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ConsoleRedirectTester.IsErrorRedirected">
+            <summary>
+            Determine whether the console's error stream is redirected.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.DefaultWidthCalculator">
+            <summary>
+            Determines the ideal width for a column based purely on the format.
+            
+            This is the place for any logic that helps to make a sensible decision about how wide a column needs to be. For example, this could be 
+            determined more accurately by examining the <see cref="P:TestConsole.OutputFormatting.Internal.ColumnFormat.FormatTemplate"/>.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.Internal.DefaultWidthCalculator.DefaultMinWidth">
+            <summary>
+            Value to be used as the minimum width if all else fails.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.Internal.DefaultWidthCalculator.DefaultMaxWidth">
+            <summary>
+            Value to be used as the maximum width if all else fails.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.FormatAnalyser">
+            <summary>
+            Matches a set of column foramt definitions with the public properties of a type.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormatAnalyser.Analyse(System.Type,System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.ColumnFormat},System.Boolean)">
+            <summary>
+            Return a list of property formats for a type using the supplied column formats.<para/>
+            
+            Supplied formats are matched positionally, and default formats will be provided for
+            any properties for which no value is provided, inluding any properties for which the 
+            corresponding entry in <see cref="!:specifiedColumns"/> is null. Excess formats will be
+            ignored.
+            </summary>
+            <param name="type">The type from which the columns are drawn.</param>
+            <param name="specifiedColumns">The user provided column formats.</param>
+            <param name="includeAllColumns">If true, include all columns from the type.</param>
+            <returns>Matched <see cref="T:TestConsole.OutputFormatting.Internal.PropertyColumnFormat"/> instances.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.FormattingIntermediate">
+            <summary>
+            A union of the types that can be format values. Most types will be strings by the time they are placed in this class, 
+            but more specialised types may also be specified as column values.
+            <seealso cref="T:TestConsole.OutputFormatting.IConsoleRenderer"/>
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormattingIntermediate.#ctor(System.String)">
+            <summary>
+            Construct from a string.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormattingIntermediate.#ctor(TestConsole.OutputFormatting.IConsoleRenderer)">
+            <summary>
+            Construct from an object derived from <see cref="T:TestConsole.OutputFormatting.IConsoleRenderer"/>.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormattingIntermediate.GetLongestWordLength(System.Int32)">
+            <summary>
+            Determine the length of the longest word in the value.
+            </summary>
+            <param name="tabLength"></param>
+            <returns>The length of the longest word.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormattingIntermediate.GetFirstWordLength(System.Int32,System.Int32)">
+            <summary>
+            Determine the length of the first word.
+            </summary>
+            <returns>The length of the first word.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.FormattingIntermediate.op_Implicit(System.String)~TestConsole.OutputFormatting.Internal.FormattingIntermediate">
+            <summary>
+            Implicitely convert strings into intermediates. This is only here to make 
+            construction of unit test data more succinct.
+            </summary>
+            <param name="text">The string the hold in the <see cref="T:TestConsole.OutputFormatting.Internal.FormattingIntermediate"/>.</param>
+            <returns>A new <see cref="T:TestConsole.OutputFormatting.Internal.FormattingIntermediate"/>.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.IPropertySource">
+            <summary>
+            Defines a property source
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.IReadInfo">
+            <summary>
+            Internal interface used to extract data required by the input process.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.OptionDefinition">
+            <summary>
+            The definitaion of an option for input purposes.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.PropertyStackFormatter">
+            <summary>
+            This class is used to format values for display in a stack column. These are columns used to 
+            replace normal columns when there is insufficient horizontal space to show all of the data 
+            in a normal table.
+            
+            For example: 
+            <code>
+            A     B       C
+            ----- ------- -------
+            aaaaa bbbbbbb ccccccc DDDDD: dddddd
+            aa a  bbbbb           EEEE: eeee ee
+            a                     eee eee eee
+                                  FFFFFFF: ffff
+            </code>
+            The values for A, B, and C are displayed normally, but D, E and F have been "stacked".
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.PropertyStackFormatter.Format(TestConsole.OutputFormatting.Internal.ColumnFormat,System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Use the format information to return a wrapped and formatted value for a property stack.
+            </summary>
+            <param name="format">The format information that will be used to perform the formatting.</param>
+            <param name="valueObject">The value that will be combined with the heading specified in the <see cref="!:format"/>.</param>
+            <param name="columnWidth">The width to which the column should be formatted.</param>
+            <param name="tabLength">The number of spaces represented by tab characters.</param>
+            <param name="firstLineHangingIndent">Number of characters at the start of the first line that cannot be used for 
+            wrapping. This is required when the wrapped text begins part way along an existing line.</param>
+            <returns>An array of lines containing the formatted output.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.RecordedCommands.FormatTableCommand`2">
+            <summary>
+            A recorded format table command.
+            </summary>
+            <remarks>A recorded format table command has slightly different rules to normal text. 
+            Since it cannot be wrapped correctly, it would be unhelpful to break it into words, therefore
+            questions like "What is the longest word?" or "How long is the first word?" are really
+            academic, and are therefore given the best answer available, which is, what is the narrowest
+            the table can be? This is not really a good answer, however, as of this writing, it can only
+            be asked as part of a <see cref="T:TestConsole.OutputFormatting.Internal.PropertyStackFormatter"/> related operation, in which case the
+            space available for the table will be minimal and the table will be rendered on a new line.
+            <p/>
+            The longest word will be used to set the stack column width, and therefore the table should
+            be able to render itself correctly. However, if it cannot and it must resort to stacking, then
+            the result will not be very readable. That is the consequence of having a lot of data but very 
+            little space.</remarks>
+            <typeparam name="T">The table row data type. In reports, this will be a generated type.</typeparam>
+            <typeparam name="TChild">The child report element type. This will be different to the row data type in reports, where it will be the original row type rather than the generated report type. See <see cref="T:TestConsole.OutputFormatting.Report`1"/>.</typeparam>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.RecordedCommands.ReplayBuffer.RecordWrapLineBreaks(System.Int32)">
+            <summary>
+            Add additional wrapping line breaks.
+            </summary>
+            <param name="wrappedLineBreaks"></param>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.RecordedCommands.ReplayBuffer.CursorLeft">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ReportColumnAligner">
+            <summary>
+            Aligns columns of data into a single string. The columns are padded such that all of the data occupies a consistent number of lines. 
+            Alignment can either be such that every column starts at the top of the row, or ends at the bottom of the row. 
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ReportColumnAligner.AlignColumns(System.Int32[],System.String[][],TestConsole.OutputFormatting.Internal.ColVerticalAligment,System.String)">
+            <summary>
+            Format a row given an array of column widths, and an array of values.
+            </summary>
+            <param name="widths">An array containing the required width for each column.</param>
+            <param name="data">The data to be displayed in each column. This must be aligned with <see cref="!:widths"/>.</param>
+            <param name="alignment">Whether the data in each column should be aligned with the top of the column or the bottom.</param>
+            <param name="columnSeperator">A string to place between each column.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails">
+            <summary>
+            Detailed options that effect the whole report, as opposed to a specific column.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.OmitHeadings">
+            <summary>
+            If true, this means the report should be rendered without headings.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.StretchColumns">
+            <summary>
+            If true, this means the report should use all of the available space and columns should be widened, even
+            beyond the size required by the sizing data.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.Options">
+            <summary>
+            The options that should be specified when the report is formatted. This is generated from the settings selected.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.ColumnDivider">
+            <summary>
+            The string that should be used to seperate columns in the report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.IndentSpaces">
+            <summary>
+            The number of extra spaces to indent the report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportParameterDetails.TitleText">
+            <summary>
+            A simple string to be shown as the report title.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ReportDefinitions.ReportQueryRowFunctionBuilder">
+            <summary>
+            Builds a function that will convert a consistent input type which is not directly specified (i.e. only the expressions contain it), to the 
+            provided output type using a set of expressions that extract values from the input type. <para/>
+            
+            <remarks>
+            An important assumption made by this process is that the output type will provide sufficient properties that match the types returned by the expressions.<para/>
+            
+            Each expression will be tied to the "next" matching property by type alone. For example:<para/>
+            <code>
+            class ResultType
+            {
+                public double D1 {get;set;}
+                public double D2 {get;set;}
+                public int    I1 {get;set;}
+                public double D3 {get;set;}
+            }
+            </code>
+            <list type="table">
+                <listheader>
+                    <term>Expression Type</term>
+                    <description>Expression</description>
+                </listheader> 
+                <item><term>Int</term><description>a.Age</description></item>
+                <item><term>Double</term><description>a.HeightMetres</description></item>
+                <item><term>Double</term><description>a.WeightKg</description></item>
+                <item><term>Double</term><description>a.WeightKg/a.HeightMetres</description></item>
+            </list>
+            <list type="table">
+                <listheader>
+                    <term>Result Property</term>
+                    <description>Expression</description>
+                </listheader> 
+                <item><term>D1</term><description>a.HeightMetres</description></item>
+                <item><term>D2</term><description>a.WeightKg</description></item>
+                <item><term>I1</term><description>a.Age</description></item>
+                <item><term>D3</term><description>a.WeightKg/a.HeightMetres</description></item>
+            </list>
+            This is important, because callers must ensure that the result type has enough properties of each required type
+            to receive all of the expression results, and that the order of the properties in the result type matches the
+            order of the expressions within each distinct type.
+            </remarks>
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.ReportExecutor">
+            <summary>
+            Execute a <see cref="T:TestConsole.OutputFormatting.Report`1"/>.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.ReportExecutor.GetLines``1(TestConsole.OutputFormatting.Report{``0},System.Int32)">
+            <summary>
+            Return the lines output by a report.
+            </summary>
+            <typeparam name="T">The type of the items that are input to the report.</typeparam>
+            <param name="report">The report definition.</param>
+            <param name="availableWidth">The available width for formatting.</param>
+            <returns>A set of report lines.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.TabularReport">
+            <summary>
+            A formatter for tabular data.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.TabularReport.Format``2(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.ColumnFormat},System.Int32,System.Int32,TestConsole.OutputFormatting.ReportFormattingOptions,System.String,System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.ReportDefinitions.BaseChildItem{``1}})">
+            <summary>
+            Format a collection of rows as a tabular report.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <typeparam name="TChild">The original row type for child reports.</typeparam>
+            <param name="data">The enumerable items.</param>
+            <param name="columns">Column formatting information. If this is not provided, default column formats will be used.</param>
+            <param name="width">The width that the report is allowed to occupy.</param>
+            <param name="numRowsToUseForSizing">The number of rows that should be used for automatically sizing columns.</param>
+            <param name="options">Options that control the formatting of the report.</param>
+            <param name="columnDivider">A string that will be used to divide columns.</param>
+            <param name="childReports">The nested reports that should be output for each table row.</param>
+            <returns>The formatted report lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.TabularReport.Format``2(TestConsole.OutputFormatting.Internal.CachedRows{``0},System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.ColumnFormat},System.Int32,TestConsole.OutputFormatting.Internal.TabularReport.Statistics,TestConsole.OutputFormatting.ReportFormattingOptions,System.String,System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.ReportDefinitions.BaseChildItem{``1}})">
+            <summary>
+            Format a collection of rows as a tabular report.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <typeparam name="TChild">The original row type for child reports.</typeparam>
+            <param name="data">The cached row items.</param>
+            <param name="columns">Column formatting information. If this is not provided, default column formats will be used.</param>
+            <param name="width">The width that the report is allowed to occupy.</param>
+            <param name="statistics">An object that captures statistics about the formatting process.</param>
+            <param name="options">Options that control the formatting of the report.</param>
+            <param name="columnDivider">A string that will be used to divide columns.</param>
+            <param name="childReports">The nested reports that should be output for each table row.</param>
+            <returns>The formatted report lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.TabularReport.Format``1(TestConsole.OutputFormatting.Internal.CachedRows{``0},System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.ColumnFormat},System.Int32,TestConsole.OutputFormatting.ReportFormattingOptions,System.String,System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.ReportDefinitions.BaseChildItem{``0}})">
+            <summary>
+            Format a collection of cached rows as a tabular report. The culture in force at the start of the enumeration will be used for all
+            rows of the report. It is not possible to change the culture while the report is being enumerated.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="data">The cached row items.</param>
+            <param name="columns">Column formatting information. If this is not provided, default column formats will be used.</param>
+            <param name="width">The width that the report is allowed to occupy.</param>
+            <param name="options">Options that effect formatting.</param>
+            <param name="columnDivider">A string that will be used to divide the report columns.</param>
+            <param name="childReports">The nested reports that should be output for each table row.</param>
+            <returns>The formatted report lines.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.Internal.TabularReport.Format``1(TestConsole.OutputFormatting.Internal.CachedRows{``0},System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.Internal.ColumnFormat},System.Int32,TestConsole.OutputFormatting.Internal.TabularReport.Statistics,TestConsole.OutputFormatting.ReportFormattingOptions,System.String,System.Collections.Generic.IEnumerable{TestConsole.OutputFormatting.ReportDefinitions.BaseChildItem{``0}})">
+            <summary>
+            Format a collection of cached rows as a tabular report. The culture in force at the start of the enumeration will be used for all
+            rows of the report. It is not possible to change the culture while the report is being enumerated.
+            </summary>
+            <typeparam name="T">The item type.</typeparam>
+            <param name="data">The cached row items.</param>
+            <param name="columns">Column formatting information. If this is not provided, default column formats will be used.</param>
+            <param name="width">The width that the report is allowed to occupy.</param>
+            <param name="wrappingLineBreaks">The number of linebreaks added due to wrapping.</param>
+            <param name="options">Options that effect the formatting.</param>
+            <param name="columnDivider">The string to be used to divide columns.</param>
+            <param name="childReports">The nested reports that should be output for each table row.</param>
+            <returns>The formatted report lines.</returns>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.TempCulture">
+            <summary>
+            Temporarily impose a change of culture within a using block. On disposal, the original culture is restored.
+            Note that behaviour is undefined if the culture is manually changed within the using block.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.TextStats">
+            <summary>
+            This class maintains statistics about text values it has been passed.
+            
+            This class is not thread safe.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.WidthCalculators.BooleanWidthCalculator">
+            <summary>
+            Calculate the defaults for Boolean column widths.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.WidthCalculators.DateTimeWidthCalculator">
+            <summary>
+            Calculate the defaults for DateTime column widths.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.WidthCalculators.NumericWidthCalculator">
+            <summary>
+            Calculate defaults for numeric column widths.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.WidthCalculators.StringWidthCalculator">
+            <summary>
+            Calculate the defaults for String column widths.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Internal.WidthCalculators.TimeSpanWidthCalculator">
+            <summary>
+            Calculate the defaults for TimeSpan column widths.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.OutputBuffer">
+            <summary>
+            This class implements the <see cref="!:IConsoleOutInterface"/> and captures the console output in a format that facilitates
+            examination of console output in a unit test.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.OutputBuffer._cursorTop">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.OutputBuffer._cursorLeft">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.OutputBuffer._encoding">
+            <summary>
+            The console encoding.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.OutputBuffer._inputStream">
+            <summary>
+            The input stream supplying input for the console.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.OutputBuffer._lengthLimit">
+            <summary>
+            The maximum number of lines the buffer may contain. Zero or less means no limit.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.#ctor(System.Text.Encoding)">
+            <summary>
+            The constructor sets default values for various console properties and allows an encoding to be specified.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.Write(System.String)">
+            <summary>
+            Write some text to the console buffer. Does not add a line feed.
+            </summary>
+            <param name="data">The text data to write. This must not contain colour instructions.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.OverWrite(System.Collections.Generic.IList{System.String},System.Int32,System.Int32,System.String)">
+            <summary>
+            Overlay some text in an existing buffer. The method will discard any data that would overflow the buffer width.
+            </summary>
+            <param name="buffer">The buffer line array.</param>
+            <param name="lineIndex">The index of the line to overwrite</param>
+            <param name="overwritePosition">The position within the line to overwrite.</param>
+            <param name="data">The text to place in the buffer at the specified position.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.CreateBufferTo(System.Int32)">
+            <summary>
+            Ensure that the buffer contains the specified line.
+            </summary>
+            <param name="ix">The zero based index of the line that must exist.</param>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.NewLine">
+            <summary>
+            Write a newline to the buffer.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.GetBuffer">
+            <summary>
+            Return the entire buffer for testing purposes. It is possible to get just the text, just the colour information or all of the data.
+            </summary>
+            <returns>A large string containing the requested data.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.OutputBuffer.SetInputStream(System.IO.TextReader)">
+            <summary>
+            Provide a text stream to provide the data for the console input stream.
+            </summary>
+            <param name="stream">The stream to use.</param>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.OutputBuffer.BufferWidth">
+            <summary>
+            The width of the buffer. This is the width of the data in the console window and can be wider than the actual window itself.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.OutputBuffer.CursorLeft">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.OutputBuffer.CursorTop">
+            <summary>
+            The current cursor position.
+            </summary>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.Report`1">
+            <summary>
+            A wrapper around an enumerable set of objects to be displayed as a report.
+            </summary>
+            <typeparam name="T">The item type of the input enumerable.</typeparam>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.Query">
+            <summary>
+            The derived report query.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.RowType">
+            <summary>
+            The type that is returned by the Query object.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.Columns">
+            <summary>
+            The custom formatters for each column in the report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.Children">
+            <summary>
+            The defintions of this report's children.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.Options">
+            <summary>
+            The report options to apply for this report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.ColumnDivider">
+            <summary>
+            The divider to place between each column on the report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.IndentSpaceCount">
+            <summary>
+            The number of spaces to indent the report.
+            </summary>
+        </member>
+        <member name="P:TestConsole.OutputFormatting.Report`1.TitleText">
+            <summary>
+            Simple text to be shown as the report title.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.RightAlign">
+            <summary>
+            Override the default column alignment for the column, and force the data to be right aligned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.LeftAlign">
+            <summary>
+            Override the default column alignment for the column, and force the data to be left aligned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.DecimalPlaces(System.Int32)">
+            <summary>
+            Sets the number of decimal places to show. This will only apply to Decimal or Double values.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.Width(System.Int32)">
+            <summary>
+            Indicates that the column must have a fixed width.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.MinWidth(System.Int32)">
+            <summary>
+            Indicates that the column has a minimum width.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.MaxWidth(System.Int32)">
+            <summary>
+            Indicates that the column has a maximum width.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.Heading(System.String)">
+            <summary>
+            Set the heading text for the column.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ColumnConfig.FinalizeColumnSettings">
+            <summary>
+            This is called after the column has been configured and will default any crucial settings that have not been configured.
+            </summary>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ReportParameters`1.Indent(System.Int32)">
+            <summary>
+            Specify the number of extra spaces to indent the report.
+            </summary>
+            <param name="spaces">The extra indent spaces count.</param>
+            <returns>The parameter object.</returns>
+        </member>
+        <member name="M:TestConsole.OutputFormatting.ReportDefinitions.ReportParameters`1.Title(System.String)">
+            <summary>
+            Adds a title string to the report.
+            </summary>
+            <param name="titleText"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:TestConsole.OutputFormatting.ReportFormattingOptions">
+            <summary>
+            Options that control the formatting of a report.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.ReportFormattingOptions.OmitHeadings">
+            <summary>
+            Skip the headings when emitting the report. This will cause the field names or headings for each column to be disregarded.
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.ReportFormattingOptions.StretchColumns">
+            <summary>
+            Fill the available width
+            </summary>
+        </member>
+        <member name="F:TestConsole.OutputFormatting.ReportFormattingOptions.IncludeAllColumns">
+            <summary>
+            If column definitions are used, include columns without a definition.
+            </summary>
+        </member>
+        <member name="T:TestConsole.Utilities.MethodInvoker">
+            <summary>
+            This class is able to generate a function to call the methods indicated by supplied MethodInfo instances.
+            The generated functions are retained so that if a method has been invoked before, the previously generated 
+            function can be reused.<para/>
+            
+            The purpose of the class is to allow exceptions to retain their call stack when they are thrown from methods 
+            invoked via reflection. If <see cref="T:System.Reflection.MethodInfo"/>'s Invoke(...) overloads are used, exceptions are wrapped in
+            a <see cref="T:System.Reflection.TargetInvocationException"/>, and throwing the <see cref="P:System.Exception.InnerException"/> rewrites
+            the call stack. Under .NET 4.5, exceptions can be rethrown with their original call stack, but there is no
+            way to do that under .NET 4.0. However, the Linq based solution works in both versions.
+            </summary>
+        </member>
+        <member name="T:TestConsole.Utilities.PrefixLines">
+            <summary>
+            Attach a prefix to each line in a set of lines contained in a string.
+            </summary>
+        </member>
+        <member name="T:TestConsole.Utilities.RunTimeTypeBuilder">
+            <summary>
+            Build .NET types from property sets, derived at runtime.
+            </summary>
+        </member>
+    </members>
+</doc>

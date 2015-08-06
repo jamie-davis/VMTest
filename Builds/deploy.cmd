@@ -1,0 +1,1 @@
+.nuget\nuget push "VMTest %VMTestversion%\VMTest.%VMTestversion%.nupkg"

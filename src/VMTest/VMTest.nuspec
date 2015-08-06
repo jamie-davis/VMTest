@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>VMTest</id>
+    <version>$version$</version>
+    <title>VMTest</title>
+    <authors>Jamie Davis</authors>
+    <owners>Jamie Davis</owners>
+    <licenseUrl>https://github.com/jamie-davis/VMTest/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/jamie-davis/VMTest</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A library designed to simplify unit testing XAML view models. The notifications and state information from your view model are recorded, allowing you to test the updates that XAML would receive.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>Testing .NET</tags>
+  </metadata>
+</package>
